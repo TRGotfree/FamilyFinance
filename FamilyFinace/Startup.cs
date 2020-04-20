@@ -45,33 +45,33 @@ namespace FamilyFinace
                     .AllowAnyHeader();
                 }));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                   .AddJwtBearer(options =>
-                   {
-                       var authOptions = new AuthentificationOptionsProvider(hostingEnvironment);
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //       .AddJwtBearer(options =>
+            //       {
+            //           var authOptions = new AuthentificationOptionsProvider(hostingEnvironment);
 
-                       options.RequireHttpsMetadata = !hostingEnvironment.IsDevelopment();
+            //           options.RequireHttpsMetadata = !hostingEnvironment.IsDevelopment();
 
-                       options.TokenValidationParameters = new TokenValidationParameters
-                       {
-                           ValidateIssuer = true,
-                           ValidIssuer = authOptions.Issuer,
-                           ValidateAudience = true,
-                           ValidAudience = authOptions.Audience,
-                           ValidateLifetime = true,
-                           IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-                           ValidateIssuerSigningKey = true
-                       };
-                   });
+            //           options.TokenValidationParameters = new TokenValidationParameters
+            //           {
+            //               ValidateIssuer = true,
+            //               ValidIssuer = authOptions.Issuer,
+            //               ValidateAudience = true,
+            //               ValidAudience = authOptions.Audience,
+            //               ValidateLifetime = true,
+            //               IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+            //               ValidateIssuerSigningKey = true
+            //           };
+            //       });
 
             services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString));
             services.AddTransient<AuthentificationOptionsProvider>();
             services.AddTransient<IRepository, RepositoryProvider>();
             services.AddTransient<ITransformer, ModelTransformer>();
-            services.AddTransient<IHashGenerator, HashGenerator>();
+            //services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<ICustomLogger, CustomLogger>();
-            services.AddTransient<IJWTProvider, JWTProvider>();
-            services.AddTransient<IUserIdentityProvider, UserIdentityProvider>();
+            //services.AddTransient<IJWTProvider, JWTProvider>();
+            //services.AddTransient<IUserIdentityProvider, UserIdentityProvider>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
@@ -89,11 +89,11 @@ namespace FamilyFinace
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
