@@ -148,7 +148,12 @@ namespace FamilyFinace.Services
 
         public async Task<IEnumerable<Cost>> GetCosts(DateTime date)
         {
-            return await repository.Cost.Where(c => c.Date == date).ToListAsync();
+            return await repository.Cost.DefaultIfEmpty()
+                .Include(cc => cc.CostCategory)
+                .Include(cs => cs.CostSubCategory)
+                .Include(pt => pt.PayType)
+                .Include(s => s.Store)
+                .Where(c => c.Date == date).ToListAsync();
         }
 
         public async Task<IEnumerable<CostSubCategory>> GetCostSubCategories()

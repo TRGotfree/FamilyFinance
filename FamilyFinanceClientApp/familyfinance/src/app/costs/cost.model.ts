@@ -2,8 +2,8 @@ export class Cost {
   public id: number;
   public categoryId: number;
   public category: string;
-  public subCategoryId: number;
-  public subCategory: string;
+  public costSubCategoryId: number;
+  public costSubCategory: string;
   public amount: number;
   public count: string;
   public date: string;
@@ -11,5 +11,5 @@ export class Cost {
   public payTypeId: number;
   public payType: string;
   public store: string;
-  public storeId: string;
+  public storeId: number;
 }

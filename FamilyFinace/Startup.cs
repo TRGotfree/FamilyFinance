@@ -67,7 +67,7 @@ namespace FamilyFinace
             services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString));
             services.AddTransient<AuthentificationOptionsProvider>();
             services.AddTransient<IRepository, RepositoryProvider>();
-            services.AddTransient<ITransformer, ModelTransformer>();
+            services.AddTransient<IModelTransformer, ModelTransformer>();
             //services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<ICustomLogger, CustomLogger>();
             //services.AddTransient<IJWTProvider, JWTProvider>();
