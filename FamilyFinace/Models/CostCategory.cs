@@ -14,7 +14,11 @@ namespace FamilyFinace.Models
 
         [Required]
         [MaxLength(500)]
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
+
+        [Required]
+        [MaxLength(500)]
+        public string SubCategoryName { get; set; }
 
         [Required]
         public bool IsRemoved { get; set; }

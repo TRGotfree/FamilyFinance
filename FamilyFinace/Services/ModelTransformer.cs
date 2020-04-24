@@ -36,7 +36,7 @@ namespace FamilyFinace.Services
             DTOModels.Cost dtoModelCost = new DTOModels.Cost
             {
                 Amount = modelCost.Amount,
-                Category = modelCost.CostCategory.Name,
+                Category = modelCost.CostCategory.CategoryName,
                 CategoryId = modelCost.CostCategoryId,
                 Comment = modelCost.Comment,
                 CostSubCategory = modelCost.CostSubCategory.Name,

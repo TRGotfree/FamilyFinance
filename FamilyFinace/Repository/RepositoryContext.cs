@@ -18,7 +18,6 @@ namespace FamilyFinace.Repository
         }
 
         public DbSet<CostCategory> CostCategory { get; set; }
-        public DbSet<CostSubCategory> CostSubCategory { get; set; }
         public DbSet<PayType> PayType { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<Cost> Cost { get; set; }
@@ -28,13 +27,8 @@ namespace FamilyFinace.Repository
         {
             modelBuilder.Entity<CostCategory>().HasKey(c => c.Id);
             modelBuilder.Entity<CostCategory>().Property(c => c.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<CostCategory>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<CostCategory>().HasIndex(c => new { c.CategoryName, c.SubCategoryName }).IsUnique();
             modelBuilder.Entity<CostCategory>().Property(c => c.IsRemoved).HasDefaultValue(false);
-
-            modelBuilder.Entity<CostSubCategory>().HasKey(c => c.Id);
-            modelBuilder.Entity<CostSubCategory>().Property(c => c.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<CostSubCategory>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<CostSubCategory>().Property(c => c.IsRemoved).HasDefaultValue(false);
 
             modelBuilder.Entity<PayType>().HasKey(p => p.Id);
             modelBuilder.Entity<PayType>().Property(p => p.Id).ValueGeneratedOnAdd();

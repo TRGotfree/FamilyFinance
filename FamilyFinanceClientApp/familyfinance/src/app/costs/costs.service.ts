@@ -33,7 +33,6 @@ export class CostsService {
 
   private errorHandler<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.debug(error);
       return of(result as T);
     };
   }
