@@ -1,0 +1,13 @@
+<app-toolbar>
+  <div id="actions-container">
+
+  </div>
+  <mat-table matSort class="mat-elevation-z8" id="costs-table" [dataSource]="dataSource">
+    <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.headerCaption}}</mat-header-cell>
+      <mat-cell *matCellDef="let cost">{{cost[gridColumn.propertyName]}}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="visibleGridColumns"></mat-header-row>
+    <mat-row *matRowDef="let cost; columns: visibleGridColumns;"></mat-row>
+  </mat-table>
+</app-toolbar>

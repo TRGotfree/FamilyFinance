@@ -1,3 +1,4 @@
+import { CostsTableColumns } from './costsTableColumns.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CostsService } from './costs.service';
 import { Cost } from './cost.model';
@@ -26,13 +27,15 @@ export class CostsComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
   selectedDate: Date;
   costs: Cost[];
+  visibleGridColumns: string[];
+  gridColumns: CostsTableColumns[];
 
   ngOnInit(): void {
     this.costsService.getCosts(new Date())
       .subscribe(data => {
-
+        this.dataSource = new MatTableDataSource(data);
       }, error => {
-
+        this.snackBar.open('Не удалось загрузить данные', 'OK', { duration: 3000 });
       }, () => {
 
       });
