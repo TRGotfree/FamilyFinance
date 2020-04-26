@@ -2,7 +2,7 @@
   <div id="actions-container">
 
   </div>
-  <mat-table matSort class="mat-elevation-z8" id="costs-table" [dataSource]="dataSource">
+  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" id="costs-table" >
     <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.headerCaption}}</mat-header-cell>
       <mat-cell *matCellDef="let cost">{{cost[gridColumn.propertyName]}}</mat-cell>

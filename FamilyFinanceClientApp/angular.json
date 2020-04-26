@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "familyfinance": {
+    "FamilyFinanceClientApp": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,17 +13,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/familyfinance",
+            "outputPath": "dist/FamilyFinanceClientApp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -41,7 +42,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -50,6 +50,11 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -58,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "familyfinance:build"
+            "browserTarget": "FamilyFinanceClientApp:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "familyfinance:build:production"
+              "browserTarget": "FamilyFinanceClientApp:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "familyfinance:build"
+            "browserTarget": "FamilyFinanceClientApp:build"
           }
         },
         "test": {
@@ -84,6 +89,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -106,15 +112,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "familyfinance:serve"
+            "devServerTarget": "FamilyFinanceClientApp:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "familyfinance:serve:production"
+              "devServerTarget": "FamilyFinanceClientApp:serve:production"
             }
           }
         }
       }
-    }},
-  "defaultProject": "familyfinance"
+    }
+  },
+  "defaultProject": "FamilyFinanceClientApp"
 }

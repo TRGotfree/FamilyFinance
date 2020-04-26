@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using FamilyFinace.Constants;
 using FamilyFinace.Interfaces;
@@ -50,6 +51,43 @@ namespace FamilyFinace.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
             }
         }
+
+        [HttpGet()]
+        [Route("meta")]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                Dictionary<string, string> propsAndDisplayNames = new Dictionary<string, string>();
+                var bindingFlags = BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
+
+                var costProperties = typeof(DTOModels.Cost).GetProperties(bindingFlags);
+                costProperties = costProperties.Where(c => c.CustomAttributes != null).ToArray();
+
+                if (costProperties == null)
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "MetaData for user tasks not found!" });
+
+                foreach (var prop in costProperties)
+                {
+                    var displayAttribute = prop.GetCustomAttributes(typeof(DisplayAttribute), true)
+                        .Select(attr => (DisplayAttribute)attr)
+                        .FirstOrDefault() as DisplayAttribute;
+
+                    if (displayAttribute == null)
+                        continue;
+
+                    propsAndDisplayNames.Add(string.Format("{0}{1}", prop.Name.Substring(0, 1).ToLower(), prop.Name.Substring(1)), displayAttribute.Name);
+                }
+
+                return Ok(propsAndDisplayNames.ToHashSet());
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Post(DTOModels.Cost cost)

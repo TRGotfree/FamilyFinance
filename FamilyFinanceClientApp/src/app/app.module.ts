@@ -16,6 +16,7 @@ import { ToolbarComponent } from './common/toolbar/toolbar.component';
 
 import { CostsComponent } from './costs/costs.component';
 import { CostsService } from './costs/costs.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CostsService } from './costs/costs.service';
     MatDialogModule,
     MatSnackBarModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    BrowserAnimationsModule
   ],
   providers: [CostsService],
   bootstrap: [AppComponent]
