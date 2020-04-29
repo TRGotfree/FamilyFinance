@@ -104,21 +104,22 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeletePayType(PayType payType)
+        public async Task DeletePayType(int payTypeId)
         {
-            if (payType == null)
-                throw new ArgumentNullException(nameof(payType));
+            var payType = await repository.PayType.FirstOrDefaultAsync(p => p.Id == payTypeId);
+            payType.IsRemoved = true;
 
-            repository.Remove(payType);
+            repository.Update(payType);
+
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteStore(Store store)
+        public async Task DeleteStore(int storeId)
         {
-            if (store == null)
-                throw new ArgumentNullException(nameof(store));
+            var store = await repository.Store.FirstOrDefaultAsync(s => s.Id == storeId);
+            store.IsRemoved = true;
 
-            repository.Remove(store);
+            repository.Update(store);
             await repository.SaveChangesAsync();
         }
 

@@ -31,6 +31,8 @@ import { CostsComponent } from './costs/costs.component';
 import { CostsService } from './costs/costs.service';
 import { CustomLogger } from './common/logger.service';
 import { NewCostComponent } from './costs/dialogs/newCost.component';
+import { PayTypeService } from './dictionaries/paytype/paytType.service';
+import { StoreService } from './dictionaries/store/store.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { NewCostComponent } from './costs/dialogs/newCost.component';
   providers: [
     CostsService,
     CustomLogger,
+    PayTypeService,
+    StoreService,
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     {
       provide: DateAdapter,

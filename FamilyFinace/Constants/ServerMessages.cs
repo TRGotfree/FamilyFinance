@@ -20,5 +20,7 @@ namespace FamilyFinace.Constants
         public const string OK = "OK";
 
         public const string USER_ACCOUNT_DEACTIVATED = "User account is deactivated!";
+
+        public const string DATA_NOT_FOUND = "Data not found!";
     }
 }

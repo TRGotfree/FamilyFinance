@@ -31,7 +31,7 @@ namespace FamilyFinace.Interfaces
 
         Task<Store> UpdateStore(Store store);
 
-        Task DeleteStore(Store store);
+        Task DeleteStore(int storeId);
 
         Task<IEnumerable<PayType>> GetPayTypes();
 
@@ -39,7 +39,7 @@ namespace FamilyFinace.Interfaces
 
         Task<PayType> UpdatePayType(PayType payType);
 
-        Task DeletePayType(PayType payType);
+        Task DeletePayType(int payTypeId);
 
         Task<IEnumerable<Income>> GetIncomes();
 
