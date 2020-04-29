@@ -1,44 +1,69 @@
-import { CostsTableColumns } from './costsTableColumns.model';
+import { CustomLogger } from './../common/logger.service';
+import { CostsTableColumn } from './costsTableColumns.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CostsService } from './costs.service';
 import { Cost } from './cost.model';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
 
-import { from } from 'rxjs';
 @Component({
   templateUrl: './costs.component.html',
   styleUrls: ['./costs.component.css']
 })
 export class CostsComponent implements OnInit {
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginatorIntl, { static: false }) matPaginatorIntl: MatPaginatorIntl;
 
-  constructor(private costsService: CostsService,
+  constructor(private costsService: CostsService, private logger: CustomLogger,
               private snackBar: MatSnackBar, private dialog: MatDialog) {
 
   }
 
+  costsDateControl = new FormControl(new Date());
   dataSource = new MatTableDataSource([]);
   selectedDate: Date;
   costs: Cost[];
   visibleGridColumns: string[];
-  gridColumns: CostsTableColumns[];
+  gridColumns: CostsTableColumn[];
+  searchValue = new FormControl('');
+  requiredColumnNames = ['editColumn'];
 
   ngOnInit(): void {
-    this.costsService.getCosts(new Date())
-      .subscribe(data => {
-        this.dataSource = new MatTableDataSource(data);
-      }, error => {
-        this.snackBar.open('Не удалось загрузить данные', 'OK', { duration: 3000 });
-      }, () => {
 
-      });
+    this.costsService.getCostsMeta().subscribe(data => {
+      this.gridColumns = data;
+      this.visibleGridColumns = data.map(d => d.propertyName);
+      for (const requiredColumn of this.requiredColumnNames) {
+        this.visibleGridColumns.push(requiredColumn);
+      }
+    }, error => {
+      this.logger.logError(error);
+      this.snackBar.open('Не удалось загрузить метаданные для формирования таблицы расходов!', 'OK', { duration: 3000 });
+    }, () => {
+      this.costsService.getCosts(new Date())
+        .subscribe(data => {
+          this.dataSource = new MatTableDataSource(data);
+          this.dataSource.sort = this.sort;
+        }, error => {
+          this.logger.logError(error);
+          this.snackBar.open('Не удалось загрузить данные по расходам!', 'OK', { duration: 3000 });
+        });
+    });
+
+  }
+
+  searchData(event: Event) {
+    const searchValue = (event.target as HTMLInputElement).value;
+    if (!searchValue) { return; }
+
+    this.dataSource.filter = searchValue.trim().toLowerCase();
+  }
+
+  editCost(cost: Cost) {
+    const test = cost;
   }
 
 }

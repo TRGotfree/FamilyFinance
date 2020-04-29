@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using FamilyFinace.Constants;
+using FamilyFinace.DTOModels;
 using FamilyFinace.Interfaces;
 using FamilyFinace.Models;
 using FamilyFinace.Services;
@@ -29,7 +30,7 @@ namespace FamilyFinace.Controllers
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet]
+        [HttpGet("{date}")]
         public async Task<IActionResult> Get(DateTime date)
         {
             try
@@ -54,11 +55,11 @@ namespace FamilyFinace.Controllers
 
         [HttpGet()]
         [Route("meta")]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             try
             {
-                Dictionary<string, string> propsAndDisplayNames = new Dictionary<string, string>();
+                List<CostsMetaData> propsAndDisplayNames = new List<CostsMetaData>(0);
                 var bindingFlags = BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
 
                 var costProperties = typeof(DTOModels.Cost).GetProperties(bindingFlags);
@@ -76,10 +77,10 @@ namespace FamilyFinace.Controllers
                     if (displayAttribute == null)
                         continue;
 
-                    propsAndDisplayNames.Add(string.Format("{0}{1}", prop.Name.Substring(0, 1).ToLower(), prop.Name.Substring(1)), displayAttribute.Name);
+                    propsAndDisplayNames.Add(new CostsMetaData { PropertyName = string.Format("{0}{1}", prop.Name.Substring(0, 1).ToLower(), prop.Name.Substring(1)), DisplayName = displayAttribute.Name } );
                 }
 
-                return Ok(propsAndDisplayNames.ToHashSet());
+                return Ok(propsAndDisplayNames);
             }
             catch (Exception ex)
             {

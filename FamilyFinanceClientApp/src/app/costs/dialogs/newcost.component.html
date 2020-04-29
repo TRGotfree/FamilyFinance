@@ -1,0 +1,45 @@
+<form [formGroup]="costsFormGroup" (ngSubmit)="save()">
+  <mat-dialog-content>
+    <h3 id="caption">{{caption}}</h3>
+    <div class="dialog-container">
+      <mat-form-field>
+        <mat-label>Сумма</mat-label>
+        <input type="number" name="amount" matInput placeholder="Сумма" [formControl]="amountControl">
+        <mat-error *ngIf="amountControl.hasError('required')">Введите сумму!</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Тип оплаты</mat-label>
+        <mat-select name="payType" [formControl]="payTypeControl" [(value)]="cost.payType" required>
+          <mat-option *ngFor="let payType of payTypes" [value]="payType.id">{{payType.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="payTypeControl.hasError('required')">Выберите тип оплаты!</mat-error>
+      </mat-form-field>
+      <div class="field-container">
+        <mat-form-field>
+          <mat-label>Магазин</mat-label>
+          <mat-select name="store" [formControl]="storeControl" [(value)]="cost.store" required>
+            <mat-option *ngFor="let store of stores" [value]="store.id">
+              {{store.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="storeControl.hasError('required')">Выберите магазин!</mat-error>
+        </mat-form-field>
+        <button type="button" mat-icon-button id="btn-add-store" (click)="addNewStore()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-form-field id="textarea-field">
+        <mat-label>Комментарий</mat-label>
+        <textarea name="comment" rows="3" [formControl]="commentControl" matInput
+          placeholder="Добавьте Комментарий..."></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="dialog-actions">
+      <button [disabled]="costsFormGroup.invalid" type="submit" id="btn-save-task" mat-raised-button color="primary"
+        (click)="save()">Сохранить</button>
+      <button id="btn-cancel" type="button" mat-raised-button color="warn" (click)="cancel()">Отмена</button>
+    </div>
+  </mat-dialog-actions>
+</form>

@@ -18,10 +18,6 @@ namespace FamilyFinace.DTOModels
         [Display(Name = "Категория")]
         public string Category { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int CostSubCategoryId { get; set; }
-
         [Display(Name = "Подкатегория")]
         public string CostSubCategory { get; set; }
 

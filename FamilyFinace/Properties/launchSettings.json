@@ -12,10 +12,10 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "familyfinance",
+      "launchUrl": "costs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "CONN_STRING": "Data Source=localhost;Initial Catalog=FamilyFinance;Integrated Security=True;Connect Timeout=30;",
+        "CONN_STRING": "Data Source=localhost\\MSSQLSERVER2012;Initial Catalog=FamilyFinance;Integrated Security=True;Connect Timeout=30;",
         "JWT_KEY": "_*cf247118689211131*_",
         "JWT_ISSUER": "FamilyFinace",
         "JWT_LIFETIME": "60",
@@ -25,11 +25,11 @@
     "FamilyFinace": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "familyfinance",
+      "launchUrl": "costs",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "CONN_STRING": "Data Source=localhost;Initial Catalog=FamilyFinance;Integrated Security=True;Connect Timeout=30;",
+        "CONN_STRING": "Data Source=localhost\\MSSQLSERVER2012;Initial Catalog=FamilyFinance;Integrated Security=True;Connect Timeout=30;",
         "JWT_KEY": "_*cf247118689211131*_",
         "JWT_ISSUER": "FamilyFinace",
         "JWT_LIFETIME": "60",

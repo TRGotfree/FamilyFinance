@@ -1,25 +1,25 @@
+import { CustomLogger } from './../common/logger.service';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { Cost } from './cost.model';
-import { CostsTableColumns } from './costsTableColumns.model';
+import { CostsTableColumn } from './costsTableColumns.model';
 
 @Injectable()
 export class CostsService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private logger: CustomLogger) {
   }
 
   getCosts(date: Date): Observable<Cost[]> {
-    return this.httpClient.get<Cost[]>(`/api/costs/${date}`)
+    return this.httpClient.get<Cost[]>(`/api/costs/${date.toISOString().substring(0, 10)}`)
       .pipe(catchError(this.errorHandler<Cost[]>('getCosts', [])));
   }
 
-  getCostsMeta(): Observable<CostsTableColumns[]> {
-    return this.httpClient.get<CostsTableColumns[]>('/api/costs/meta')
-      .pipe(catchError(this.errorHandler<CostsTableColumns[]>('getCostsMeta', [])));
+  getCostsMeta(): Observable<CostsTableColumn[]> {
+    return this.httpClient.get<CostsTableColumn[]>('/api/costs/meta')
+      .pipe(catchError(this.errorHandler<CostsTableColumn[]>('getCostsMeta', [])));
   }
 
   addCost(cost: Cost): Observable<Cost> {
@@ -39,9 +39,7 @@ export class CostsService {
 
   private errorHandler<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      if (!environment.production) {
-        console.error(error);
-      }
+      this.logger.logError('Error during: ' + operation + ' Details: ' + error);
       return of(result as T);
     };
   }

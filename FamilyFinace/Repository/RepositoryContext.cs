@@ -10,10 +10,8 @@ namespace FamilyFinace.Repository
 {
     public class RepositoryContext : DbContext
     {
-        private readonly IHashGenerator hashGenerator;
-        public RepositoryContext(IHashGenerator hashGenerator, DbContextOptions<RepositoryContext> options) : base(options)
+        public RepositoryContext(DbContextOptions<RepositoryContext> options) : base(options)
         {
-            this.hashGenerator = hashGenerator;
             Database.EnsureCreated();
         }
 
@@ -43,7 +41,6 @@ namespace FamilyFinace.Repository
             modelBuilder.Entity<Cost>().HasKey(s => s.Id);
             modelBuilder.Entity<Cost>().Property(s => s.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Cost>().HasIndex(c => c.CostCategoryId);
-            modelBuilder.Entity<Cost>().HasIndex(c => c.CostSubCategoryId);
             modelBuilder.Entity<Cost>().HasIndex(c => c.PayTypeId);
             modelBuilder.Entity<Cost>().HasIndex(c => c.StoreId);
             modelBuilder.Entity<Cost>().Property(s => s.Date).HasColumnType("date");

@@ -16,11 +16,6 @@ namespace FamilyFinace.Models
         public int CostCategoryId { get; set; }
 
         public CostCategory CostCategory { get; set; }
-
-        [Required]
-        public int CostSubCategoryId { get; set; }
-
-        public CostSubCategory CostSubCategory { get; set; }
         
         [Required]
         [Range(1, double.MaxValue)]

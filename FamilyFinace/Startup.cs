@@ -84,7 +84,8 @@ namespace FamilyFinace
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            if (env.IsProduction())
+                app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseDefaultFiles();

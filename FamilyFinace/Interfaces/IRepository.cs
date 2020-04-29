@@ -25,14 +25,6 @@ namespace FamilyFinace.Interfaces
 
         Task DeleteCostCategory(CostCategory costCategory);
 
-        Task<IEnumerable<CostSubCategory>> GetCostSubCategories();
-
-        Task<CostSubCategory> AddCostSubCategory(CostSubCategory costSubCategory);
-
-        Task<CostSubCategory> UpdateCostSubCategory(CostSubCategory costSubCategory);
-
-        Task DeleteCostSubCategory(CostSubCategory costSubCategory);
-
         Task<IEnumerable<Store>> GetStores();
 
         Task<Store> AddStore(Store store);

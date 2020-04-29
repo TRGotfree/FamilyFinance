@@ -42,16 +42,7 @@ namespace FamilyFinace.Services
             return costCategory;
         }
 
-        public async Task<CostSubCategory> AddCostSubCategory(CostSubCategory costSubCategory)
-        {
-            if (costSubCategory == null)
-                throw new ArgumentNullException(nameof(costSubCategory));
 
-            await repository.AddAsync(costSubCategory);
-            await repository.SaveChangesAsync();
-
-            return costSubCategory;
-        }
 
         public async Task<Income> AddIncome(Income income)
         {
@@ -104,16 +95,6 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteCostSubCategory(CostSubCategory costSubCategory)
-        {
-            if (costSubCategory == null)
-                throw new ArgumentNullException(nameof(costSubCategory));
-
-
-            repository.Remove(costSubCategory);
-            await repository.SaveChangesAsync();
-        }
-
         public async Task DeleteIncome(Income income)
         {
             if (income == null)
@@ -148,17 +129,27 @@ namespace FamilyFinace.Services
 
         public async Task<IEnumerable<Cost>> GetCosts(DateTime date)
         {
-            return await repository.Cost.DefaultIfEmpty()
-                .Include(cc => cc.CostCategory)
-                .Include(cs => cs.CostSubCategory)
-                .Include(pt => pt.PayType)
+            var costsCategories = await repository.CostCategory.ToListAsync();
+            var costsOnCertainDate = await repository.Cost
+                .Include(c => c.CostCategory)
+                .Include(p => p.PayType)
                 .Include(s => s.Store)
                 .Where(c => c.Date == date).ToListAsync();
-        }
 
-        public async Task<IEnumerable<CostSubCategory>> GetCostSubCategories()
-        {
-            return await repository.CostSubCategory.Where(c => !c.IsRemoved).ToListAsync();
+            var notExistingCostCategories = costsCategories.Where(c => !costsOnCertainDate.Select(cc => cc.CostCategoryId).Contains(c.Id)).ToList();
+
+            for (int i = 0; i < notExistingCostCategories.Count; i++)
+            {
+                costsOnCertainDate.Add(new Cost
+                {
+                    CostCategoryId = notExistingCostCategories[i].Id,
+                    Store = new Store(),
+                    PayType = new PayType(),
+                    CostCategory = notExistingCostCategories[i]
+                });
+            }
+
+            return costsOnCertainDate.OrderBy(cc => cc.CostCategory.CategoryName);
         }
 
         public async Task<IEnumerable<Income>> GetIncomes()
@@ -196,17 +187,6 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
 
             return costCategory;
-        }
-
-        public async Task<CostSubCategory> UpdateCostSubCategory(CostSubCategory costSubCategory)
-        {
-            if (costSubCategory == null)
-                throw new ArgumentNullException(nameof(costSubCategory));
-
-            repository.Update(costSubCategory);
-            await repository.SaveChangesAsync();
-
-            return costSubCategory;
         }
 
         public async Task<Income> UpdateIncome(Income income)

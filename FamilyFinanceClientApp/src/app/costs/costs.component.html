@@ -1,13 +1,29 @@
 <app-toolbar>
-  <div id="actions-container">
-
-  </div>
-  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" id="costs-table" >
+  <mat-toolbar id="actions-container">
+    <mat-form-field id="search-field">
+      <mat-label>
+        Поиск по категориям
+      </mat-label>
+      <input type="text" (keyup)="searchData($event)" matInput placeholder="Введите название" [formControl]="searchValue">
+      <!-- <mat-icon matSuffix>search</mat-icon> -->
+    </mat-form-field>
+    <mat-form-field id="date-picker">
+      <input matInput [matDatepicker]="costsDate" [formControl]="costsDateControl">
+      <mat-datepicker-toggle matSuffix [for]="costsDate"></mat-datepicker-toggle>
+      <mat-datepicker #costsDate></mat-datepicker>
+    </mat-form-field>
+    <button mat-raised-button color="accent" id="btn-close-month">Закрыть месяц</button>
+  </mat-toolbar>
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows id="costs-table">
     <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.headerCaption}}</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
       <mat-cell *matCellDef="let cost">{{cost[gridColumn.propertyName]}}</mat-cell>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="visibleGridColumns"></mat-header-row>
+    <ng-container [matColumnDef]="'editColumn'">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Редактировать</mat-header-cell>
+      <mat-cell *matCellDef="let cost" (click)="editCost(cost)"><button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button></mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="visibleGridColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let cost; columns: visibleGridColumns;"></mat-row>
   </mat-table>
 </app-toolbar>

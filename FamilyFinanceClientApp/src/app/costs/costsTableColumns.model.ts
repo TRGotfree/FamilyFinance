@@ -1,4 +1,4 @@
-export class CostsTableColumns {
+export class CostsTableColumn {
    public propertyName: string;
-   public headerCaption: string;
+   public displayName: string;
 }

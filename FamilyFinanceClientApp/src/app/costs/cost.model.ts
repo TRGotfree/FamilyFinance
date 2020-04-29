@@ -2,7 +2,6 @@ export class Cost {
   public id: number;
   public categoryId: number;
   public category: string;
-  public costSubCategoryId: number;
   public costSubCategory: string;
   public amount: number;
   public count: string;
