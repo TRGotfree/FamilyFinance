@@ -5,7 +5,12 @@
       <mat-form-field>
         <mat-label>Сумма</mat-label>
         <input type="number" name="amount" matInput placeholder="Сумма" [formControl]="amountControl">
-        <mat-error *ngIf="amountControl.hasError('min') || amountControl.hasError('required')">Введите сумму!</mat-error>
+        <mat-error *ngIf="amountControl.hasError('min') || amountControl.hasError('required')">Введите сумму!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Количество</mat-label>
+        <input type="text" name="count" matInput placeholder="Количество" [formControl]="countControl">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Тип оплаты</mat-label>
@@ -24,9 +29,23 @@
           </mat-select>
           <mat-error *ngIf="storeControl.hasError('required')">Выберите магазин!</mat-error>
         </mat-form-field>
-        <button type="button" mat-icon-button id="btn-add-store" (click)="addNewStore()">
+        <button type="button" *ngIf="!isPanelWithNewStoreOpened"  mat-icon-button id="btn-add-store" (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
           <mat-icon>add</mat-icon>
         </button>
+        <button type="button" *ngIf="isPanelWithNewStoreOpened" mat-icon-button id="btn-close-store" (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div id="expandedPanel" *ngIf="isPanelWithNewStoreOpened">
+        <mat-form-field >
+          <mat-label>Название магазина</mat-label>
+          <input type="text" matInput name="storeName" [formControl]="storeNameControl" placeholder="Введите название">
+          <button mat-button *ngIf="storeNameControl.value" matSuffix mat-icon-button aria-label="Очистить" (click)="storeNameControl.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="storeNameControl.hasError('required')">Введите название магазина!</mat-error>
+        </mat-form-field>
+        <button [disabled]="storeNameControl.invalid" mat-raised-button color="accent" (click)="addNewStore()">Добавить</button>
       </div>
       <mat-form-field id="textarea-field">
         <mat-label>Комментарий</mat-label>
@@ -36,8 +55,8 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button [disabled]="costsFormGroup.invalid" type="submit" id="btn-save-task" mat-raised-button color="primary"
-      (click)="save()">Сохранить</button>
+    <button [disabled]="costsFormGroup.invalid" type="submit" id="btn-save-task"
+    mat-raised-button color="primary">Сохранить</button>
     <button id="btn-cancel" type="button" mat-raised-button color="warn" (click)="cancel()">Отмена</button>
   </mat-dialog-actions>
 </form>

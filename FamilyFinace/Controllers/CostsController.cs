@@ -91,7 +91,7 @@ namespace FamilyFinace.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post(DTOModels.Cost cost)
+        public async Task<IActionResult> Post([FromBody]DTOModels.Cost cost)
         {
             try
             {

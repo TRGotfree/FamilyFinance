@@ -16,6 +16,11 @@ export class StoreService {
       .pipe(catchError(this.handleError<Store[]>('getStores', [])));
   }
 
+  public addStore(newStore: Store): Observable<Store> {
+    return this.httpClient.post<Store>('/api/stores', newStore)
+      .pipe(catchError(this.handleError<Store>('addStore', null)));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.logger.logError('Error during: ' + operation + ' Details: ' + error);

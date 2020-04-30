@@ -26,3 +26,26 @@ mat-form-field {
   align-items: center;
   width: 100%;
 }
+
+#btn-add-store {
+  color: #673ab7;
+}
+
+#btn-close-store {
+  color: #673ab7;
+}
+
+#expandedPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+#expandedPanel mat-form-field {
+  width: 65%;
+}
+#expandedPanel button {
+  width: 30%;
+}

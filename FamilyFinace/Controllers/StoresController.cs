@@ -43,7 +43,7 @@ namespace FamilyFinace.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Store store)
+        public async Task<IActionResult> Post([FromBody]Store store)
         {
             try
             {

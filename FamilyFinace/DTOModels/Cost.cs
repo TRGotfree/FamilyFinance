@@ -8,7 +8,6 @@ namespace FamilyFinace.DTOModels
 {
     public class Cost
     {
-        [Range(1, int.MaxValue)]
         public int Id { get; set; }
 
         [Required]
@@ -29,7 +28,7 @@ namespace FamilyFinace.DTOModels
         [Display(Name = "Кол-во")]
         public string Count { get; set; }
 
-        [Required]
+        //[Required]
         public DateTime Date { get; set; }
 
         public string Comment { get; set; }

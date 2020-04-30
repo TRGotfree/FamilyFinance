@@ -47,7 +47,8 @@ export class CostsComponent implements OnInit {
     }, () => {
       this.costsService.getCosts(new Date())
         .subscribe(data => {
-          this.dataSource = new MatTableDataSource(data);
+          this.costs = data;
+          this.dataSource = new MatTableDataSource(this.costs);
           this.dataSource.sort = this.sort;
         }, error => {
           this.logger.logError(error);
@@ -75,9 +76,9 @@ export class CostsComponent implements OnInit {
 
     cost.date = costDate.getFullYear() === 1 ? costControlDate.toISOString().substring(0, 10) : cost.date;
 
-    const newCostDialog = this.dialog.open(NewCostComponent, { width: '500px', height: '450px', data: cost });
-    newCostDialog.afterClosed().subscribe(newCost => {
-
+    const newCostDialog = this.dialog.open(NewCostComponent, { width: '500px', height: '550px', data: cost });
+    newCostDialog.afterClosed().subscribe(editedCost => {
+      // this.costs.find(c => c.categoryId === editedCost.categoryId);
     }, error => this.logger.logError(error));
 
 

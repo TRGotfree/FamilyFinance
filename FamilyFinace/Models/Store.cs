@@ -9,7 +9,6 @@ namespace FamilyFinace.Models
     public class Store
     {
         [Required]
-        [Range(1, int.MaxValue)]
         public int Id { get; set; }
 
         [Required]

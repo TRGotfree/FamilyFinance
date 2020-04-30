@@ -24,12 +24,12 @@ export class CostsService {
 
   addCost(cost: Cost): Observable<Cost> {
     return this.httpClient.post<Cost>('/api/costs', cost)
-      .pipe(catchError(this.errorHandler<Cost>('addCost', new Cost())));
+      .pipe(catchError(this.errorHandler<Cost>('addCost', null)));
   }
 
   updateCost(cost: Cost): Observable<Cost> {
     return this.httpClient.put<Cost>('/api/costs', cost)
-      .pipe(catchError(this.errorHandler<Cost>('updateCost', new Cost())));
+      .pipe(catchError(this.errorHandler<Cost>('updateCost', null)));
   }
 
   deleteCost(cost: Cost): Observable<void> {
