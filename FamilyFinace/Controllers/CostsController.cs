@@ -89,9 +89,8 @@ namespace FamilyFinace.Controllers
             }
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]DTOModels.Cost cost)
+        public async Task<IActionResult> Post(DTOModels.Cost cost)
         {
             try
             {
@@ -128,6 +127,21 @@ namespace FamilyFinace.Controllers
                     return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 
                 return StatusCode((int)HttpStatusCode.Created, updatedCost);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
+            }
+        }
+    
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await repository.DeleteCost(id);
+                return StatusCode((int)HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {

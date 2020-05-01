@@ -77,8 +77,9 @@ namespace FamilyFinace.Services
             return store;
         }
 
-        public async Task DeleteCost(Cost cost)
+        public async Task DeleteCost(int costId)
         {
+            var cost = repository.Cost.FirstOrDefault(c => c.Id == costId);
             if (cost == null)
                 throw new ArgumentNullException(nameof(cost));
 
@@ -107,6 +108,10 @@ namespace FamilyFinace.Services
         public async Task DeletePayType(int payTypeId)
         {
             var payType = await repository.PayType.FirstOrDefaultAsync(p => p.Id == payTypeId);
+            
+            if (payType == null)
+                throw new ArgumentNullException(nameof(payType));
+ 
             payType.IsRemoved = true;
 
             repository.Update(payType);
@@ -117,6 +122,10 @@ namespace FamilyFinace.Services
         public async Task DeleteStore(int storeId)
         {
             var store = await repository.Store.FirstOrDefaultAsync(s => s.Id == storeId);
+
+            if (store == null)
+                throw new ArgumentNullException(nameof(store));
+
             store.IsRemoved = true;
 
             repository.Update(store);

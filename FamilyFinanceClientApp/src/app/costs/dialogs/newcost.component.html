@@ -14,38 +14,45 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Тип оплаты</mat-label>
-        <mat-select name="payType" [formControl]="payTypeControl" [(value)]="cost.payType" required>
-          <mat-option *ngFor="let payType of payTypes" [value]="payType.id">{{payType.name}}</mat-option>
-        </mat-select>
+        <input type="text" name="payType" matInput [formControl]="payTypeControl" [matAutocomplete]="payTypeAutoComplete"
+          [(value)]="cost.payType" required placeholder="Выберите магазин или сервис">
+        <mat-autocomplete #payTypeAutoComplete="matAutocomplete">
+          <mat-option *ngFor="let payType of filteredPayTypes | async" [value]="payType.name">{{payType.name}}</mat-option>
+        </mat-autocomplete>
         <mat-error *ngIf="payTypeControl.hasError('required')">Выберите тип оплаты!</mat-error>
       </mat-form-field>
       <div class="field-container">
         <mat-form-field>
           <mat-label>Магазин</mat-label>
-          <mat-select name="store" [formControl]="storeControl" [(value)]="cost.store" required>
-            <mat-option *ngFor="let store of stores" [value]="store.id">
-              {{store.name}}
-            </mat-option>
-          </mat-select>
+          <input type="text" name="store" matInput [formControl]="storeControl" [matAutocomplete]="storeAutoComplete"
+            [(value)]="cost.store" required placeholder="Выберите магазин или сервис">
+          <mat-autocomplete #storeAutoComplete="matAutocomplete">
+            <mat-option *ngFor="let store of filteredStores | async" [value]="store.name">{{store.name}}</mat-option>
+          </mat-autocomplete>
           <mat-error *ngIf="storeControl.hasError('required')">Выберите магазин!</mat-error>
         </mat-form-field>
-        <button type="button" *ngIf="!isPanelWithNewStoreOpened"  mat-icon-button id="btn-add-store" (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
+        <button type="button" *ngIf="!isPanelWithNewStoreOpened" mat-icon-button id="btn-add-store"
+          (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
           <mat-icon>add</mat-icon>
         </button>
-        <button type="button" *ngIf="isPanelWithNewStoreOpened" mat-icon-button id="btn-close-store" (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
+        <button type="button" *ngIf="isPanelWithNewStoreOpened" mat-icon-button id="btn-close-store"
+          (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
           <mat-icon>close</mat-icon>
         </button>
       </div>
       <div id="expandedPanel" *ngIf="isPanelWithNewStoreOpened">
-        <mat-form-field >
+        <mat-form-field>
           <mat-label>Название магазина</mat-label>
           <input type="text" matInput name="storeName" [formControl]="storeNameControl" placeholder="Введите название">
-          <button mat-button *ngIf="storeNameControl.value" matSuffix mat-icon-button aria-label="Очистить" (click)="storeNameControl.setValue('')">
+          <button mat-button type="reset" *ngIf="storeNameControl.value" matSuffix mat-icon-button aria-label="Очистить"
+            (click)="storeNameControl.setValue('')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="storeNameControl.hasError('required')">Введите название магазина!</mat-error>
         </mat-form-field>
-        <button [disabled]="storeNameControl.invalid" mat-raised-button color="accent" (click)="addNewStore()">Добавить</button>
+        <button type="button" [disabled]="storeNameControl.invalid" mat-raised-button color="accent"
+          (click)="addNewStore()">Добавить</button>
+          <mat-divider></mat-divider>
       </div>
       <mat-form-field id="textarea-field">
         <mat-label>Комментарий</mat-label>
@@ -55,8 +62,8 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button [disabled]="costsFormGroup.invalid" type="submit" id="btn-save-task"
-    mat-raised-button color="primary">Сохранить</button>
+    <button [disabled]="costsFormGroup.invalid" type="submit" id="btn-save-task" mat-raised-button
+      color="primary">Сохранить</button>
     <button id="btn-cancel" type="button" mat-raised-button color="warn" (click)="cancel()">Отмена</button>
   </mat-dialog-actions>
 </form>

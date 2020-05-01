@@ -1,21 +1,23 @@
-
 #actions-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  justify-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 12pt;
   height: 80px;
   margin-left: 10px;
   margin-right: 10px;
+  background-color: whitesmoke;
 }
 
 #search-field {
   width: 300px;
   color: #673ab7;
-  min-width: 150px;
+  min-width: 130px;
+  margin-top: 25px;
 }
 
 /* #search-field mat-icon {
@@ -23,18 +25,22 @@
 } */
 
 #btn-close-month {
-  min-width: 150px;
+  min-width: 130px;
 }
 
 #date-picker {
   width: 300px;
   color: #673ab7;
-  min-width: 150px;
+  min-width: 100px;
+  margin-top: 25px;
 }
 
 mat-table {
   margin-left: 10px;
   margin-right: 10px;
+  height: 75vh;
+  overflow-x: scroll;
+  overflow-y: unset;
 }
 
 mat-header-row {
@@ -67,3 +73,6 @@ mat-row:hover {
   color: white;
 }
 
+#btn-delete-cost mat-icon {
+  color: #BB3268;
+}

@@ -1,15 +1,17 @@
+import { Observable } from 'rxjs';
 // tslint:disable:align
 import { Store } from './../../dictionaries/store/store.model';
 import { PayType } from './../../dictionaries/paytype/paytype.model';
 import { Cost } from './../cost.model';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayTypeService } from '../../dictionaries/paytype/paytType.service';
 import { StoreService } from '../../dictionaries/store/store.service';
 import { CustomLogger } from './../../common/logger.service';
 import { CostsService } from '../costs.service';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './newcost.component.html',
@@ -19,7 +21,6 @@ export class NewCostComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<NewCostComponent>,
     @Inject(MAT_DIALOG_DATA) public cost: Cost,
-    public userTaskTypeDialog: MatDialog,
     private logger: CustomLogger,
     private snackBar: MatSnackBar,
     private costsService: CostsService,
@@ -28,7 +29,10 @@ export class NewCostComponent implements OnInit {
 
   costsFormGroup: FormGroup;
   payTypes: PayType[] = [];
+  filteredPayTypes: Observable<PayType[]>;
   stores: Store[] = [];
+  filteredStores: Observable<Store[]>;
+
   caption = (this.cost && this.cost.costSubCategory) ? this.cost.costSubCategory : 'Новый расход';
 
   amountControl = new FormControl(this.cost.amount, [Validators.required, Validators.min(50)]);
@@ -66,7 +70,9 @@ export class NewCostComponent implements OnInit {
     this.cost.amount = this.amountControl.value;
     this.cost.count = this.countControl.value;
     this.cost.payTypeId = this.payTypeControl.value;
+    this.cost.payType = this.payTypes.find(p => p.id === this.cost.payTypeId).name;
     this.cost.storeId = this.storeControl.value;
+    this.cost.store = this.stores.find(s => s.id === this.cost.storeId).name;
     this.cost.comment = this.commentControl.value;
 
     if (this.cost && this.cost.id > 0) {
@@ -122,6 +128,11 @@ export class NewCostComponent implements OnInit {
       this.payTypes = data;
     }, error => {
       this.logger.logError(error);
+    }, () => {
+      this.filteredPayTypes = this.payTypeControl.valueChanges.pipe(startWith(''), map(searchedPayTypeName => {
+        const payTypeName = searchedPayTypeName.toLowerCase();
+        return this.payTypes.filter(p => p.name.toLowerCase().includes(payTypeName));
+      }));
     });
   }
 
@@ -130,6 +141,11 @@ export class NewCostComponent implements OnInit {
       this.stores = data;
     }, error => {
       this.logger.logError(error);
+    }, () => {
+      this.filteredStores = this.storeControl.valueChanges.pipe(startWith(''), map(searchedStoreName => {
+        const storeName = searchedStoreName.toLowerCase();
+        return this.stores.filter(s => s.name.toLowerCase().includes(storeName));
+      }));
     });
   }
 

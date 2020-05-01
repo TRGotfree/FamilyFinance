@@ -1,3 +1,4 @@
+import { DateTimeBuilder } from './../common/dateTimeBuilder';
 import { CustomLogger } from './../common/logger.service';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -9,11 +10,11 @@ import { CostsTableColumn } from './costsTableColumns.model';
 @Injectable()
 export class CostsService {
 
-  constructor(private httpClient: HttpClient, private logger: CustomLogger) {
+  constructor(private httpClient: HttpClient, private logger: CustomLogger, private dateTimeBuilder: DateTimeBuilder) {
   }
 
   getCosts(date: Date): Observable<Cost[]> {
-    return this.httpClient.get<Cost[]>(`/api/costs/${date.toISOString().substring(0, 10)}`)
+    return this.httpClient.get<Cost[]>(`/api/costs/${this.dateTimeBuilder.getCurrentDate(date, '-')}`)
       .pipe(catchError(this.errorHandler<Cost[]>('getCosts', [])));
   }
 

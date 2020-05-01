@@ -15,7 +15,7 @@ namespace FamilyFinace.Interfaces
         
         Task<Cost> UpdateCost(Cost cost);
         
-        Task DeleteCost(Cost cost);
+        Task DeleteCost(int costId);
 
         Task<IEnumerable<CostCategory>> GetCostCategories();
 

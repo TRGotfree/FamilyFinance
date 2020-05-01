@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, DEFAULT_CURRENCY_CODE } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDividerModule } from '@angular/material/divider';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -34,13 +36,15 @@ import { CustomLogger } from './common/logger.service';
 import { NewCostComponent } from './costs/dialogs/newCost.component';
 import { PayTypeService } from './dictionaries/paytype/paytType.service';
 import { StoreService } from './dictionaries/store/store.service';
-
+import { DateTimeBuilder } from './common/dateTimeBuilder';
+import { ConfirmationComponent } from './common/dialogs/confirmation.component';
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     CostsComponent,
-    NewCostComponent
+    NewCostComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -62,14 +66,18 @@ import { StoreService } from './dictionaries/store/store.service';
     MatButtonModule,
     MatSortModule,
     MatSelectModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatAutocompleteModule,
+    MatDividerModule
   ],
   providers: [
     CostsService,
     CustomLogger,
     PayTypeService,
     StoreService,
+    DateTimeBuilder,
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'UZS' },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -90,6 +98,6 @@ import { StoreService } from './dictionaries/store/store.service';
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [NewCostComponent]
+  entryComponents: [NewCostComponent, ConfirmationComponent]
 })
 export class AppModule { }
