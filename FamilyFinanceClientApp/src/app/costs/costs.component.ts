@@ -1,6 +1,6 @@
-import { ConfirmationComponent } from './../common/dialogs/confirmation.component';
+import { ConfirmationComponent } from './../shared/dialogs/confirmation.component';
 // tslint:disable:align
-import { CustomLogger } from './../common/logger.service';
+import { CustomLogger } from './../shared/services/logger.service';
 import { CostsTableColumn } from './costsTableColumns.model';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CostsService } from './costs.service';
@@ -110,7 +110,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       return;
     }
     const confirmationDialog = this.dialogRef.open(ConfirmationComponent,
-      { height: '250px', width: '350px', data: { caption: 'Внимание', message: 'Вы уверены что хотите удалить расход?' } });
+      { height: '180px', width: '350px', data: { caption: 'Внимание', message: 'Вы уверены что хотите удалить расход?' } });
     confirmationDialog.afterClosed().subscribe(result => {
       if (!result) {
         return;

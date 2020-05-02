@@ -66,6 +66,17 @@ namespace FamilyFinace.Services
             return payType;
         }
 
+        public async Task<Plan> AddPlan(Plan plan)
+        {
+            if (plan == null)
+                throw new ArgumentNullException(nameof(plan));
+
+            await repository.AddAsync(plan);
+            await repository.SaveChangesAsync();
+
+            return plan;
+        }
+
         public async Task<Store> AddStore(Store store)
         {
             if (store == null)
@@ -108,14 +119,24 @@ namespace FamilyFinace.Services
         public async Task DeletePayType(int payTypeId)
         {
             var payType = await repository.PayType.FirstOrDefaultAsync(p => p.Id == payTypeId);
-            
+
             if (payType == null)
                 throw new ArgumentNullException(nameof(payType));
- 
+
             payType.IsRemoved = true;
 
             repository.Update(payType);
 
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeletePlan(int planId)
+        {
+            var plan = await repository.Plan.FirstOrDefaultAsync(p => p.Id == planId);
+            if (plan == null)
+                throw new ArgumentNullException(nameof(plan));
+
+            repository.Remove(plan);
             await repository.SaveChangesAsync();
         }
 
@@ -172,6 +193,28 @@ namespace FamilyFinace.Services
             return await repository.PayType.Where(pt => !pt.IsRemoved).ToListAsync();
         }
 
+        public async Task<IEnumerable<Plan>> GetPlans(int month, int year)
+        {
+            var costsCategories = await repository.CostCategory.ToListAsync();
+            var plans = await repository.Plan.Include(c => c.Category).Where(p => p.Month == month && p.Year == year).ToListAsync();
+
+            var notExistingCostCategories = costsCategories.Where(c => !plans.Select(p => p.CategoryId).Contains(c.Id)).ToList();
+
+            for (int i = 0; i < notExistingCostCategories.Count; i++)
+            {
+                plans.Add(new Plan
+                {
+                    CategoryId = notExistingCostCategories[i].Id,
+                    Category = notExistingCostCategories[i],
+                    Month = month,
+                    Year = year,
+                    Amount = 0
+                });
+            }
+
+            return plans.OrderBy(cc => cc.Category.CategoryName);
+        }
+
         public async Task<IEnumerable<Store>> GetStores()
         {
             return await repository.Store.Where(s => !s.IsRemoved).ToListAsync();
@@ -219,6 +262,16 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
 
             return payType;
+        }
+
+        public async Task<Plan> UpdatePlan(Plan plan)
+        {
+            if (plan == null)
+                throw new ArgumentNullException(nameof(plan));
+
+            repository.Update(plan);
+            await repository.SaveChangesAsync();
+            return plan;
         }
 
         public async Task<Store> UpdateStore(Store store)

@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
 // tslint:disable:align
+import { Observable } from 'rxjs';
 import { Store } from './../../dictionaries/store/store.model';
 import { PayType } from './../../dictionaries/paytype/paytype.model';
 import { Cost } from './../cost.model';
@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayTypeService } from '../../dictionaries/paytype/paytType.service';
 import { StoreService } from '../../dictionaries/store/store.service';
-import { CustomLogger } from './../../common/logger.service';
+import { CustomLogger } from './../../shared/services/logger.service';
 import { CostsService } from '../costs.service';
 import { startWith, map } from 'rxjs/operators';
 
@@ -69,10 +69,10 @@ export class NewCostComponent implements OnInit {
 
     this.cost.amount = this.amountControl.value;
     this.cost.count = this.countControl.value;
-    this.cost.payTypeId = this.payTypeControl.value;
-    this.cost.payType = this.payTypes.find(p => p.id === this.cost.payTypeId).name;
-    this.cost.storeId = this.storeControl.value;
-    this.cost.store = this.stores.find(s => s.id === this.cost.storeId).name;
+    this.cost.payTypeId = this.payTypes.find(p => p.name === this.payTypeControl.value).id;
+    this.cost.payType = this.payTypeControl.value;
+    this.cost.storeId = this.stores.find(s => s.name === this.storeControl.value).id;
+    this.cost.store = this.storeControl.value;
     this.cost.comment = this.commentControl.value;
 
     if (this.cost && this.cost.id > 0) {
@@ -115,7 +115,7 @@ export class NewCostComponent implements OnInit {
       }
       this.stores.push(storeData);
       this.isPanelWithNewStoreOpened = false;
-      this.storeControl.setValue(storeData.id);
+      this.storeControl.setValue(storeData.name);
       this.storeNameControl.setValue('');
     }, error => {
       this.logger.logError(error);

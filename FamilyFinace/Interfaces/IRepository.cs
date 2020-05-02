@@ -49,5 +49,12 @@ namespace FamilyFinace.Interfaces
 
         Task DeleteIncome(Income income);
 
+        Task<Plan> AddPlan(Plan plan);
+
+        Task<IEnumerable<Plan>> GetPlans(int month, int year);
+
+        Task<Plan> UpdatePlan(Plan plan);
+
+        Task DeletePlan(int planId);
     }
 }

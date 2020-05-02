@@ -29,22 +29,24 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './common/toolbar/toolbar.component';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { CostsComponent } from './costs/costs.component';
 import { CostsService } from './costs/costs.service';
-import { CustomLogger } from './common/logger.service';
+import { CustomLogger } from './shared/services/logger.service';
 import { NewCostComponent } from './costs/dialogs/newCost.component';
 import { PayTypeService } from './dictionaries/paytype/paytType.service';
 import { StoreService } from './dictionaries/store/store.service';
-import { DateTimeBuilder } from './common/dateTimeBuilder';
-import { ConfirmationComponent } from './common/dialogs/confirmation.component';
+import { DateTimeBuilder } from './shared/services/dateTimeBuilder.service';
+import { ConfirmationComponent } from './shared/dialogs/confirmation.component';
+import { PlanComponent } from './plan/plan.component';
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     CostsComponent,
     NewCostComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    PlanComponent
   ],
   imports: [
     BrowserModule,

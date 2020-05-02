@@ -1,5 +1,5 @@
-import { DateTimeBuilder } from './../common/dateTimeBuilder';
-import { CustomLogger } from './../common/logger.service';
+import { DateTimeBuilder } from './../shared/services/dateTimeBuilder.service';
+import { CustomLogger } from './../shared/services/logger.service';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';

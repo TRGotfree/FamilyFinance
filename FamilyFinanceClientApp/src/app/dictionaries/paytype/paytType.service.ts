@@ -1,4 +1,4 @@
-import { CustomLogger } from './../../common/logger.service';
+import { CustomLogger } from './../../shared/services/logger.service';
 import { PayType } from './paytype.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';

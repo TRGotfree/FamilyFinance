@@ -27,6 +27,33 @@ namespace FamilyFinace.Services
             return costModel;
         }
 
+        public Models.Plan FromDTOModelPlanToModelPlan(DTOModels.Plan dtoPlan)
+        {
+            if (dtoPlan == null)
+                throw new ArgumentNullException(nameof(dtoPlan));
+
+            return new Models.Plan()
+            {
+                Amount = dtoPlan.Amount,
+                CategoryId = dtoPlan.CategoryId,
+                Id = dtoPlan.Id,
+                Month = dtoPlan.Month,
+                Year = dtoPlan.Year
+            };
+        }
+
+        public DTOModels.Plan FromModelPlanToDTOModelPlan(Models.Plan modelPlan)
+        {
+            if (modelPlan == null)
+                throw new ArgumentNullException(nameof(modelPlan));
+
+            return new DTOModels.Plan()
+            {
+                Amount = modelPlan.Amount,
+                
+            };
+        }
+
         public DTOModels.Cost FromModelsCostToDTOModelCost(Models.Cost modelCost)
         {
             if (modelCost == null)
@@ -64,6 +91,11 @@ namespace FamilyFinace.Services
             return costs;
         }
 
+        public List<Models.Plan> RangeOfDTOModelsPlanToRangeOfModelPlans(IEnumerable<DTOModels.Plan> dtoPlans)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<DTOModels.Cost> RangeOfModelCostsToRangeOfDTOModelCosts(IEnumerable<Models.Cost> modelsCosts)
         {
             if (modelsCosts == null)
@@ -75,6 +107,11 @@ namespace FamilyFinace.Services
                 costs.Add(FromModelsCostToDTOModelCost(modelsCosts.ElementAt(i)));
 
             return costs;
+        }
+
+        public List<DTOModels.Plan> RangeOfModelsPlanToRangeOfDTOPlans(IEnumerable<Models.Plan> modelPlans)
+        {
+            throw new NotImplementedException();
         }
     }
 }

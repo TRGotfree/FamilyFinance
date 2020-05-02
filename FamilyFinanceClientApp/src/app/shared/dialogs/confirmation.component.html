@@ -1,0 +1,14 @@
+<form (ngSubmit)="confirm()">
+  <mat-dialog-content>
+    <div *ngIf="caption" id="caption-container">
+      <h3 id="caption">{{caption}}</h3>
+    </div>
+    <div *ngIf="message" id="message-container">
+      <h4>{{message}}</h4>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button id="btn-ok" type="submit" mat-raised-button color="primary">ОК</button>
+    <button id="btn-cancel" type="button" mat-raised-button color="warn" (click)="cancel()">Отмена</button>
+  </mat-dialog-actions>
+</form>

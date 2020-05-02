@@ -21,6 +21,8 @@ namespace FamilyFinace.Repository
         public DbSet<Cost> Cost { get; set; }
         public DbSet<Income> Income { get; set; }
 
+        public DbSet<Plan> Plan { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CostCategory>().HasKey(c => c.Id);
@@ -51,6 +53,12 @@ namespace FamilyFinace.Repository
             modelBuilder.Entity<Income>().HasIndex(c => c.PayTypeId);
             modelBuilder.Entity<Income>().Property(s => s.Date).HasColumnType("date");
             modelBuilder.Entity<Income>().Property(s => s.Date).HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<Plan>().HasKey(p => p.Id);
+            modelBuilder.Entity<Plan>().Property(p => p.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Plan>().HasIndex(p => p.Month);
+            modelBuilder.Entity<Plan>().HasIndex(p => p.Year);
+            modelBuilder.Entity<Plan>().HasIndex(p => p.CategoryId);
         }
     }
 }
