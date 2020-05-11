@@ -28,5 +28,7 @@ namespace FamilyFinace.Models
         public int CategoryId { get; set; }
 
         public CostCategory Category { get; set; }
+
+        public virtual decimal MaxAmountOfCost { get; set; }
     }
 }

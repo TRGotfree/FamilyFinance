@@ -1,4 +1,5 @@
 ﻿using FamilyFinace.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,33 +26,6 @@ namespace FamilyFinace.Services
             };
 
             return costModel;
-        }
-
-        public Models.Plan FromDTOModelPlanToModelPlan(DTOModels.Plan dtoPlan)
-        {
-            if (dtoPlan == null)
-                throw new ArgumentNullException(nameof(dtoPlan));
-
-            return new Models.Plan()
-            {
-                Amount = dtoPlan.Amount,
-                CategoryId = dtoPlan.CategoryId,
-                Id = dtoPlan.Id,
-                Month = dtoPlan.Month,
-                Year = dtoPlan.Year
-            };
-        }
-
-        public DTOModels.Plan FromModelPlanToDTOModelPlan(Models.Plan modelPlan)
-        {
-            if (modelPlan == null)
-                throw new ArgumentNullException(nameof(modelPlan));
-
-            return new DTOModels.Plan()
-            {
-                Amount = modelPlan.Amount,
-                
-            };
         }
 
         public DTOModels.Cost FromModelsCostToDTOModelCost(Models.Cost modelCost)
@@ -91,11 +65,6 @@ namespace FamilyFinace.Services
             return costs;
         }
 
-        public List<Models.Plan> RangeOfDTOModelsPlanToRangeOfModelPlans(IEnumerable<DTOModels.Plan> dtoPlans)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<DTOModels.Cost> RangeOfModelCostsToRangeOfDTOModelCosts(IEnumerable<Models.Cost> modelsCosts)
         {
             if (modelsCosts == null)
@@ -109,9 +78,63 @@ namespace FamilyFinace.Services
             return costs;
         }
 
+        public Models.Plan FromDTOModelPlanToModelPlan(DTOModels.Plan dtoPlan)
+        {
+            if (dtoPlan == null)
+                throw new ArgumentNullException(nameof(dtoPlan));
+
+            return new Models.Plan()
+            {
+                Amount = dtoPlan.Amount,
+                CategoryId = dtoPlan.CategoryId,
+                Id = dtoPlan.Id,
+                Month = dtoPlan.Month,
+                Year = dtoPlan.Year
+            };
+        }
+
+        public DTOModels.Plan FromModelPlanToDTOModelPlan(Models.Plan modelPlan)
+        {
+            if (modelPlan == null)
+                throw new ArgumentNullException(nameof(modelPlan));
+
+            return new DTOModels.Plan()
+            {
+                Amount = modelPlan.Amount,
+                MaxFactAmount = modelPlan.MaxAmountOfCost,
+                CategoryId = modelPlan.CategoryId,
+                CategoryName = modelPlan.Category?.CategoryName,
+                SubCategoryName = modelPlan.Category?.SubCategoryName,
+                Id = modelPlan.Id,
+                Month = modelPlan.Month,
+                Year = modelPlan.Year
+            };
+        }
+
+        public List<Models.Plan> RangeOfDTOModelsPlanToRangeOfModelPlans(IEnumerable<DTOModels.Plan> dtoPlans)
+        {
+            if (dtoPlans == null)
+                throw new ArgumentNullException(nameof(dtoPlans));
+
+            List<Models.Plan> listOfPlans = new List<Models.Plan>(0);
+
+            for (int i = 0; i < dtoPlans.Count(); i++)
+                listOfPlans.Add(FromDTOModelPlanToModelPlan(dtoPlans.ElementAt(i)));
+
+            return listOfPlans;
+        }
+
         public List<DTOModels.Plan> RangeOfModelsPlanToRangeOfDTOPlans(IEnumerable<Models.Plan> modelPlans)
         {
-            throw new NotImplementedException();
+            if (modelPlans == null)
+                throw new ArgumentNullException(nameof(modelPlans));
+
+            List<DTOModels.Plan> plans = new List<DTOModels.Plan>(0);
+            
+            for (int i = 0; i < modelPlans.Count(); i++)
+                plans.Add(FromModelPlanToDTOModelPlan(modelPlans.ElementAt(i)));
+
+            return plans;
         }
     }
 }

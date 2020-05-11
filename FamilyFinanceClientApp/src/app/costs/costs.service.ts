@@ -5,7 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Cost } from './cost.model';
-import { CostsTableColumn } from './costsTableColumns.model';
+import { TableColumnAttribute } from '../shared/models/tableColumnAttribute';
 
 @Injectable()
 export class CostsService {
@@ -18,9 +18,9 @@ export class CostsService {
       .pipe(catchError(this.errorHandler<Cost[]>('getCosts', [])));
   }
 
-  getCostsMeta(): Observable<CostsTableColumn[]> {
-    return this.httpClient.get<CostsTableColumn[]>('/api/costs/meta')
-      .pipe(catchError(this.errorHandler<CostsTableColumn[]>('getCostsMeta', [])));
+  getCostsMeta(): Observable<TableColumnAttribute[]> {
+    return this.httpClient.get<TableColumnAttribute[]>('/api/costs/meta')
+      .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getCostsMeta', [])));
   }
 
   addCost(cost: Cost): Observable<Cost> {

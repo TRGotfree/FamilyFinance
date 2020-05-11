@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FamilyFinace.DTOModels
 {
-    public class CostsMetaData
+    public class ModelMetaData
     {
         public string PropertyName { get; set; }
 

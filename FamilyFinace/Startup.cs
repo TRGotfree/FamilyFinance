@@ -68,7 +68,7 @@ namespace FamilyFinace
             services.AddTransient<AuthentificationOptionsProvider>();
             services.AddTransient<IRepository, RepositoryProvider>();
             services.AddTransient<IModelTransformer, ModelTransformer>();
-            //services.AddTransient<IHashGenerator, HashGenerator>();
+            services.AddTransient<IModelMetaDataProvider, ModelMetaDataProvider>();
             services.AddTransient<ICustomLogger, CustomLogger>();
             //services.AddTransient<IJWTProvider, JWTProvider>();
             //services.AddTransient<IUserIdentityProvider, UserIdentityProvider>();

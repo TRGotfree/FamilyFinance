@@ -22,12 +22,14 @@ namespace FamilyFinace.Controllers
         private readonly ICustomLogger logger;
         private readonly IRepository repository;
         private readonly IModelTransformer modelTransformer;
+        private readonly IModelMetaDataProvider modelMetaDataProvider;
 
-        public CostsController(ICustomLogger logger, IModelTransformer modelTransformer, IRepository repository)
+        public CostsController(ICustomLogger logger, IModelTransformer modelTransformer, IRepository repository, IModelMetaDataProvider modelMetaDataProvider)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.modelTransformer = modelTransformer ?? throw new ArgumentNullException(nameof(modelTransformer));
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.logger = logger;
+            this.modelTransformer = modelTransformer;
+            this.repository = repository;
+            this.modelMetaDataProvider = modelMetaDataProvider;
         }
 
         [HttpGet("{date}")]
@@ -59,26 +61,9 @@ namespace FamilyFinace.Controllers
         {
             try
             {
-                List<CostsMetaData> propsAndDisplayNames = new List<CostsMetaData>(0);
-                var bindingFlags = BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
-
-                var costProperties = typeof(DTOModels.Cost).GetProperties(bindingFlags);
-                costProperties = costProperties.Where(c => c.CustomAttributes != null).ToArray();
-
-                if (costProperties == null)
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "MetaData for user tasks not found!" });
-
-                foreach (var prop in costProperties)
-                {
-                    var displayAttribute = prop.GetCustomAttributes(typeof(DisplayAttribute), true)
-                        .Select(attr => (DisplayAttribute)attr)
-                        .FirstOrDefault() as DisplayAttribute;
-
-                    if (displayAttribute == null)
-                        continue;
-
-                    propsAndDisplayNames.Add(new CostsMetaData { PropertyName = string.Format("{0}{1}", prop.Name.Substring(0, 1).ToLower(), prop.Name.Substring(1)), DisplayName = displayAttribute.Name } );
-                }
+                var propsAndDisplayNames = modelMetaDataProvider.GetMeta<CostCategory>();
+                if (propsAndDisplayNames == null)
+                    return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 
                 return Ok(propsAndDisplayNames);
             }

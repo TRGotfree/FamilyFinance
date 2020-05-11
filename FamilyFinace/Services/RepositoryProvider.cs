@@ -153,6 +153,8 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
+
+
         public async Task<IEnumerable<CostCategory>> GetCostCategories()
         {
             return await repository.CostCategory.Where(c => !c.IsRemoved).ToListAsync();
@@ -183,6 +185,45 @@ namespace FamilyFinace.Services
             return costsOnCertainDate.OrderBy(cc => cc.CostCategory.CategoryName);
         }
 
+        public async Task<IEnumerable<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year)
+        {
+            var costsCategories = await repository.CostCategory.ToListAsync();
+            var averagePlanValues = await repository.Cost
+                .Include(c => c.CostCategory)
+                .GroupBy(ci => ci.CostCategory, cc => cc.Amount)
+                .Join(repository.Plan, c => c.Key.Id, p => p.CategoryId, 
+                (c, p) => new Plan { 
+                    Id = p.Id, 
+                    Month = p.Month, 
+                    Year = p.Year, 
+                    Amount = p.Amount, 
+                    MaxAmountOfCost = c.Max(), 
+                    CategoryId = c.Key.Id, 
+                    Category = c.Key })
+                .Where(p => p.Year == year && p.Month == month).ToListAsync();
+
+            return averagePlanValues;
+                //.Select(c => new Plan { Month = month, Year = year, Category = c.Key, CategoryId = c.Key.Id, MaxAmountOfCost = c.Max() }).ToListAsync();
+
+            //var notExistingCostCategories = costsCategories.Where(c => !averagePlanValues.Select(cc => cc.CategoryId).Contains(c.Id)).ToList();
+            //foreach (var costCategory in costsCategories)
+            //{
+            //    var plan = averagePlanValues.FirstOrDefault(p => p.CategoryId == costCategory.Id);
+            //    if (plan != null)
+            //    {
+
+            //    }
+            //    else
+            //    {
+            //        var newPlan = new Plan
+            //        {
+            //            Amount = 0, 
+            //        }
+            //    }
+            //}
+
+            //return costsOnCertainDate.OrderBy(cc => cc.CostCategory.CategoryName);
+        }
         public async Task<IEnumerable<Income>> GetIncomes()
         {
             return await repository.Income.ToListAsync();

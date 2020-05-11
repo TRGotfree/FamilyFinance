@@ -21,8 +21,8 @@ namespace FamilyFinace.DTOModels
         [Display(Name = "Подкатегория")]
         public string SubCategoryName { get; set; }
 
-        [Display(Name = "Среднее значение затрат за прошлый период")]
-        public decimal AvgFactAmount { get; set; }
+        [Display(Name = "Максимальное значение затрат за прошлый период")]
+        public decimal MaxFactAmount { get; set; }
 
         [Required]
         [Range(1, double.MaxValue)]

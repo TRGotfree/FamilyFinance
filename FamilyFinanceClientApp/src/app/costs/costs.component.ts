@@ -1,7 +1,7 @@
 import { ConfirmationComponent } from './../shared/dialogs/confirmation.component';
 // tslint:disable:align
 import { CustomLogger } from './../shared/services/logger.service';
-import { CostsTableColumn } from './costsTableColumns.model';
+import { TableColumnAttribute } from '../shared/models/tableColumnAttribute';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CostsService } from './costs.service';
 import { Cost } from './cost.model';
@@ -29,7 +29,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   selectedDate: Date;
   costs: Cost[];
   visibleGridColumns: string[];
-  gridColumns: CostsTableColumn[];
+  gridColumns: TableColumnAttribute[];
   searchValueControl = new FormControl('');
   requiredColumnNames = ['editColumn', 'deleteCostColumn'];
 
