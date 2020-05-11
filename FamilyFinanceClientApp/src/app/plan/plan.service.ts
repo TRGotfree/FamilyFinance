@@ -1,3 +1,4 @@
+import { TableColumnAttribute } from './../shared/models/tableColumnAttribute';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CustomLogger } from '../shared/services/logger.service';
@@ -15,12 +16,12 @@ export class PlanService {
     urlParams.append('year', year.toString());
 
     return this.httpClient.get<Plan[]>('/api/plans', { params: urlParams })
-    .pipe(catchError(this.errorHandler<Plan[]>('getPlans', [])));
+    .pipe(catchError(this.errorHandler<Plan[]>('getPlans', null)));
   }
 
   public getPlansMeta() {
-    return this.httpClient.get<Plan[]>('/api/plans/meta')
-    .pipe(catchError(this.errorHandler<Plan[]>('getPlansMeta', [])));
+    return this.httpClient.get<TableColumnAttribute[]>('/api/plans/meta')
+    .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getPlansMeta', null)));
   }
 
   private errorHandler<T>(operation = 'operation', result?: T) {

@@ -21,7 +21,7 @@ namespace FamilyFinace.Services
             costProperties = costProperties.Where(c => c.CustomAttributes != null).ToArray();
 
             if (costProperties == null)
-                throw new Exception("MetaData for user tasks not found!");
+                throw new Exception($"MetaData for {nameof(T)} not found!");
 
             foreach (var prop in costProperties)
             {
@@ -32,7 +32,11 @@ namespace FamilyFinace.Services
                 if (displayAttribute == null)
                     continue;
 
-                propsAndDisplayNames.Add(new ModelMetaData { PropertyName = string.Format("{0}{1}", prop.Name.Substring(0, 1).ToLower(), prop.Name.Substring(1)), DisplayName = displayAttribute.Name });
+                propsAndDisplayNames.Add(new ModelMetaData
+                {
+                    PropertyName = string.Format("{0}{1}", prop.Name.Substring(0, 1).ToLower(), prop.Name.Substring(1)),
+                    DisplayName = displayAttribute.Name
+                });
             }
 
             return propsAndDisplayNames;

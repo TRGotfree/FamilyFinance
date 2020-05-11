@@ -1,3 +1,4 @@
+import { PlanService } from './plan/plan.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, DEFAULT_CURRENCY_CODE } from '@angular/core';
 
@@ -77,6 +78,7 @@ import { PlanComponent } from './plan/plan.component';
     CustomLogger,
     PayTypeService,
     StoreService,
+    PlanService,
     DateTimeBuilder,
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'UZS' },
