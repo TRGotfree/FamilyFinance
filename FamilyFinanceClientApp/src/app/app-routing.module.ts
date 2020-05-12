@@ -5,13 +5,13 @@ import { PlanComponent } from './plan/plan.component';
 
 const routes: Routes = [
   {
-    path: '**', component: CostsComponent,
-  },
-  {
     path: 'costs', component: CostsComponent
   },
   {
-    path: 'plan', component: PlanComponent
+    path: 'plans', component: PlanComponent
+  },
+  {
+    path: '**', component: CostsComponent,
   }
 ];
 

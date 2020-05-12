@@ -61,7 +61,7 @@ namespace FamilyFinace.Controllers
         {
             try
             {
-                var propsAndDisplayNames = modelMetaDataProvider.GetMeta<CostCategory>();
+                var propsAndDisplayNames = modelMetaDataProvider.GetMeta<DTOModels.Cost>();
                 if (propsAndDisplayNames == null)
                     return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 

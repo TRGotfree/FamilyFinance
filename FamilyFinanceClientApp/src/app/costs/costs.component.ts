@@ -31,7 +31,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   visibleGridColumns: string[];
   gridColumns: TableColumnAttribute[];
   searchValueControl = new FormControl('');
-  requiredColumnNames = ['editColumn', 'deleteCostColumn'];
+  requiredColumnNames = ['editColumn', 'deleteColumn'];
 
   ngOnInit(): void {
 

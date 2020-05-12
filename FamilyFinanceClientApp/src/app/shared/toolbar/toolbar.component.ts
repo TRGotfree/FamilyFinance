@@ -17,7 +17,7 @@ export class ToolbarComponent implements OnInit {
     if (!this.menuItems || this.menuItems.length === 0) {
       this.menuItems = [
         new MenuItem('/costs', 'Расходы', 'trending_down'),
-        new MenuItem('/plan', 'План', 'done_all'),
+        new MenuItem('/plans', 'План', 'done_all'),
         new MenuItem('/incomes', 'Доход', 'trending_up'),
         new MenuItem('/reports', 'Отчёты', 'assignment'),
         new MenuItem('/dictionaries', 'Справочники', 'book')

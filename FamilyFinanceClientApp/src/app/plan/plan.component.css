@@ -1,0 +1,63 @@
+#actions-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  justify-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 12pt;
+  height: 80px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: whitesmoke;
+}
+
+#search-field {
+  width: 300px;
+  color: #673ab7;
+  min-width: 130px;
+  margin-top: 25px;
+}
+
+mat-table {
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 75vh;
+  overflow-x: scroll;
+  overflow-y: unset;
+}
+
+mat-header-row {
+  background-color: #673ab7;
+}
+
+mat-header-row > mat-header-cell {
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+mat-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
+
+mat-row:hover {
+  background-color: rgb(234, 237, 255);
+}
+
+::ng-deep .mat-sort-header-arrow {
+  color: white;
+}
+
+#btn-delete-cost mat-icon {
+  color: #BB3268;
+}

@@ -10,18 +10,42 @@ import { Plan } from './plan.model';
 export class PlanService {
   constructor(private httpClient: HttpClient, private logger: CustomLogger) { }
 
+  private url = '/api/plans';
+
   public getPlans(month: number, year: number): Observable<Plan[]> {
     const urlParams = new HttpParams();
     urlParams.append('month', month.toString());
     urlParams.append('year', year.toString());
 
-    return this.httpClient.get<Plan[]>('/api/plans', { params: urlParams })
-    .pipe(catchError(this.errorHandler<Plan[]>('getPlans', null)));
+    return this.httpClient.get<Plan[]>(this.url, { params: urlParams })
+      .pipe(catchError(this.errorHandler<Plan[]>('getPlans', null)));
   }
 
   public getPlansMeta() {
-    return this.httpClient.get<TableColumnAttribute[]>('/api/plans/meta')
-    .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getPlansMeta', null)));
+    return this.httpClient.get<TableColumnAttribute[]>(this.url + '/meta')
+      .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getPlansMeta', null)));
+  }
+
+  public addPlan(plan: Plan): Observable<Plan> {
+    if (!plan) {
+      throw new Error('Input parameter plan couldn\'t be null or undefined!');
+    }
+
+    return this.httpClient.post<Plan>(this.url, plan)
+      .pipe(catchError(this.errorHandler<Plan>('addPlan', null)));
+  }
+
+  public updatePlan(plan: Plan): Observable<Plan> {
+    if (!plan) {
+      throw new Error('Input parameter plan couldn\'t be null or undefined!');
+    }
+    return this.httpClient.put<Plan>(this.url, plan)
+      .pipe(catchError(this.errorHandler<Plan>('updatePlan', null)));
+  }
+
+  public deletePlan(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.url}/${id}`)
+      .pipe(catchError(this.errorHandler<void>('deletePlan', null)));
   }
 
   private errorHandler<T>(operation = 'operation', result?: T) {

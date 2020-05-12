@@ -30,7 +30,7 @@
           <mat-icon>edit</mat-icon>
         </button></mat-cell>
     </ng-container>
-    <ng-container [matColumnDef]="'deleteCostColumn'">
+    <ng-container [matColumnDef]="'deleteColumn'">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Удалить</mat-header-cell>
       <mat-cell *matCellDef="let cost" (click)="deleteCost(cost)"><button mat-icon-button id="btn-delete-cost" color="primary">
           <mat-icon>delete</mat-icon>
