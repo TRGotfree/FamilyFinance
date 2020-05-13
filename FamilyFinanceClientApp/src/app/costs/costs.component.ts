@@ -24,6 +24,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar, private dialogRef: MatDialog) {
   }
 
+  isLoading = true;
   costsDateControl = new FormControl(new Date());
   dataSource = new MatTableDataSource([]);
   selectedDate: Date;
@@ -34,7 +35,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   requiredColumnNames = ['editColumn', 'deleteColumn'];
 
   ngOnInit(): void {
-
+    this.isLoading = true;
     this.costsService.getCostsMeta().subscribe(data => {
       this.gridColumns = data;
       this.visibleGridColumns = data.map(d => d.propertyName);
@@ -58,6 +59,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   }
 
   loadCostsOnDate(date: Date) {
+    this.isLoading = true;
     this.costsService.getCosts(date)
       .subscribe(data => {
         this.costs = data;
@@ -66,7 +68,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       }, error => {
         this.logger.logError(error);
         this.snackBar.open('Не удалось загрузить данные по расходам!', 'OK', { duration: 3000 });
-      });
+      }, () => this.isLoading = !this.isLoading);
   }
 
   searchData(event: Event) {

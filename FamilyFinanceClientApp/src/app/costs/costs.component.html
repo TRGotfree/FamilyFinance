@@ -19,7 +19,9 @@
     </mat-form-field>
     <button mat-raised-button color="accent" id="btn-close-month">Закрыть месяц</button>
   </div>
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows id="costs-table">
+  <mat-spinner *ngIf="isLoading" color="accent">
+  </mat-spinner>
+  <mat-table *ngIf="!isLoading" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows id="costs-table">
     <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
       <mat-cell *matCellDef="let cost">{{cost[gridColumn.propertyName]}}</mat-cell>

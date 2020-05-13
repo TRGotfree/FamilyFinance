@@ -1,0 +1,18 @@
+<form [formGroup]="planFormGroup" (ngSubmit)="save()">
+  <mat-dialog-content>
+    <h3 id="caption">{{caption}}</h3>
+    <div class="dialog-container">
+      <mat-form-field>
+        <mat-label>Сумма</mat-label>
+        <input id="amount" type="number" name="amount" matInput placeholder="Сумма" [formControl]="amountControl">
+        <mat-error *ngIf="amountControl.hasError('min') || amountControl.hasError('required')">Введите сумму!
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button [disabled]="planFormGroup.invalid" type="submit" id="btn-save-task" mat-raised-button
+      color="primary">Сохранить</button>
+    <button id="btn-cancel" type="button" mat-raised-button color="warn" (click)="cancel()">Отмена</button>
+  </mat-dialog-actions>
+</form>

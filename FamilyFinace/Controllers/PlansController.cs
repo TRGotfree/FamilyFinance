@@ -30,7 +30,7 @@ namespace FamilyFinace.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery][Range(1, 12)]int month, [FromQuery][Range(2020, 2200)]int year)
+        public async Task<IActionResult> Get([FromQuery][Required, Range(1, 12)]int month, [FromQuery][Required, Range(2020, 2200)]int year)
         {
             try
             {

@@ -21,7 +21,7 @@ namespace FamilyFinace.DTOModels
         [Display(Name = "Подкатегория")]
         public string SubCategoryName { get; set; }
 
-        [Display(Name = "Максимальное значение затрат за прошлый период")]
+        [Display(Name = "Макс. значение затрат за прошлый период")]
         public decimal MaxFactAmount { get; set; }
 
         [Required]
@@ -30,11 +30,11 @@ namespace FamilyFinace.DTOModels
         public decimal Amount { get; set; }
 
         [Required]
-        [Range(2020, 2200)]
+        [Range(1, 12)]
         public int Month { get; set; }
 
         [Required]
-        [Range(1, 12)]
+        [Range(2020, 2200)]
         public int Year { get; set; }
 
 

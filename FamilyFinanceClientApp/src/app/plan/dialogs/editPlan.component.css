@@ -1,0 +1,33 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+mat-dialog-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#amount {
+  font-size: 14pt;
+}
+

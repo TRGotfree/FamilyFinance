@@ -1,3 +1,4 @@
+import { EditPlanComponent } from './plan/dialogs/editPlan.component';
 import { PlanService } from './plan/plan.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, DEFAULT_CURRENCY_CODE } from '@angular/core';
@@ -20,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -47,7 +49,8 @@ import { PlanComponent } from './plan/plan.component';
     CostsComponent,
     NewCostComponent,
     ConfirmationComponent,
-    PlanComponent
+    PlanComponent,
+    EditPlanComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,8 @@ import { PlanComponent } from './plan/plan.component';
     MatSelectModule,
     MatExpansionModule,
     MatAutocompleteModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     CostsService,
@@ -102,6 +106,6 @@ import { PlanComponent } from './plan/plan.component';
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [NewCostComponent, ConfirmationComponent]
+  entryComponents: [NewCostComponent, ConfirmationComponent, EditPlanComponent]
 })
 export class AppModule { }

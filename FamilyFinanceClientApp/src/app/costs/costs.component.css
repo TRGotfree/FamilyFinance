@@ -35,6 +35,11 @@
   margin-top: 25px;
 }
 
+mat-spinner {
+  margin-top: 25vh;
+  margin-left: 45vw;
+}
+
 mat-table {
   margin-left: 10px;
   margin-right: 10px;

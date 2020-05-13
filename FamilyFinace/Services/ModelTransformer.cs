@@ -36,16 +36,16 @@ namespace FamilyFinace.Services
             DTOModels.Cost dtoModelCost = new DTOModels.Cost
             {
                 Amount = modelCost.Amount,
-                Category = modelCost.CostCategory.CategoryName,
+                Category = modelCost.CostCategory?.CategoryName,
                 CategoryId = modelCost.CostCategoryId,
-                CostSubCategory = modelCost.CostCategory.SubCategoryName,
+                CostSubCategory = modelCost.CostCategory?.SubCategoryName,
                 Comment = modelCost.Comment,
                 Count = modelCost.Count,
                 Date = modelCost.Date,
                 Id = modelCost.Id,
-                PayType = modelCost.PayType.Name,
+                PayType = modelCost.PayType?.Name,
                 PayTypeId = modelCost.PayTypeId,
-                Store = modelCost.Store.Name,
+                Store = modelCost.Store?.Name,
                 StoreId = modelCost.StoreId
             };
 

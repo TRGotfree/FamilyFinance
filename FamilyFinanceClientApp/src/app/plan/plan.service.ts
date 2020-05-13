@@ -13,16 +13,16 @@ export class PlanService {
   private url = '/api/plans';
 
   public getPlans(month: number, year: number): Observable<Plan[]> {
-    const urlParams = new HttpParams();
-    urlParams.append('month', month.toString());
-    urlParams.append('year', year.toString());
+    let urlParams = new HttpParams();
+    urlParams = urlParams.append('month', month.toString());
+    urlParams = urlParams.append('year', year.toString());
 
     return this.httpClient.get<Plan[]>(this.url, { params: urlParams })
       .pipe(catchError(this.errorHandler<Plan[]>('getPlans', null)));
   }
 
   public getPlansMeta() {
-    return this.httpClient.get<TableColumnAttribute[]>(this.url + '/meta')
+    return this.httpClient.get<TableColumnAttribute[]>(`${this.url}/meta`)
       .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getPlansMeta', null)));
   }
 

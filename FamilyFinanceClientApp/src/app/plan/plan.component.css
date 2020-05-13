@@ -13,11 +13,31 @@
   background-color: whitesmoke;
 }
 
-#search-field {
+.toolbar-field {
   width: 300px;
   color: #673ab7;
   min-width: 130px;
   margin-top: 25px;
+}
+
+#data-period-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 32vw;
+}
+
+.data-period {
+  width: 150px;
+  color: #673ab7;
+  min-width: 130px;
+  margin-top: 25px;
+}
+
+mat-spinner {
+  margin-top: 25vh;
+  margin-left: 45vw;
 }
 
 mat-table {
@@ -59,5 +79,5 @@ mat-row:hover {
 }
 
 #btn-delete-cost mat-icon {
-  color: #BB3268;
+  color: #bb3268;
 }

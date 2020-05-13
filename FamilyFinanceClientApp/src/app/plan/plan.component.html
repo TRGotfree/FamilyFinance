@@ -1,25 +1,43 @@
 <app-toolbar>
   <div id="actions-container">
-    <mat-form-field appearance="outline" id="search-field">
+    <mat-form-field appearance="outline" class="toolbar-field">
       <mat-label>
         Поиск по категориям
       </mat-label>
       <input type="text" (keyup)="searchData($event)" matInput placeholder="Введите название"
         [formControl]="searchValueControl">
-      <mat-icon *ngIf="!searchValueControl.value"  matSuffix>search</mat-icon>
+      <mat-icon *ngIf="!searchValueControl.value" matSuffix>search</mat-icon>
       <button mat-button type="reset" *ngIf="searchValueControl.value" matSuffix mat-icon-button aria-label="Очистить"
         (click)="resetFilter()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-    <!-- <mat-form-field id="date-picker" appearance="outline" (click)="costsDate.open()" >
-      <input matInput [matDatepicker]="costsDate" [formControl]="costsDateControl">
-      <mat-datepicker-toggle matSuffix [for]="costsDate"></mat-datepicker-toggle>
-      <mat-datepicker #costsDate></mat-datepicker>
-    </mat-form-field> -->
-    <!-- <button mat-raised-button color="accent" id="btn-close-month">Закрыть месяц</button> -->
+
+    <div id="data-period-container">
+      <mat-form-field appearance="outline" class="data-period">
+        <mat-label>Месяц</mat-label>
+        <input type="text" name="month" #month matInput [formControl]="monthFormControl" [matAutocomplete]="monthAutoComplete"
+          placeholder="Выберите месяц">
+        <mat-autocomplete #monthAutoComplete="matAutocomplete">
+          <mat-option *ngFor="let month of months" [value]="month">{{month}}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="data-period">
+        <mat-label>Год</mat-label>
+        <input type="text" name="year" #year matInput [formControl]="yearFormControl" [matAutocomplete]="yearAutoComplete"
+          placeholder="Выберите месяц">
+        <mat-autocomplete #yearAutoComplete="matAutocomplete">
+          <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-raised-button color="accent" id="btn-close-month" (click)="loadPlans(month.value, year.value)" >Загрузить данные</button>
+    </div>
   </div>
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows id="costs-table">
+  <mat-spinner *ngIf="isLoading" color="accent">
+  </mat-spinner>
+  <mat-table *ngIf="!isLoading" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows
+    id="plan-table">
     <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
       <mat-cell *matCellDef="let plan">{{plan[gridColumn.propertyName]}}</mat-cell>
@@ -32,7 +50,8 @@
     </ng-container>
     <ng-container [matColumnDef]="'deleteColumn'">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Удалить</mat-header-cell>
-      <mat-cell *matCellDef="let plan" (click)="deletePlan(plan)"><button mat-icon-button id="btn-delete-cost" color="primary">
+      <mat-cell *matCellDef="let plan" (click)="deletePlan(plan)"><button mat-icon-button id="btn-delete-cost"
+          color="primary">
           <mat-icon>delete</mat-icon>
         </button></mat-cell>
     </ng-container>
