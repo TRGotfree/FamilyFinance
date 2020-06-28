@@ -42,6 +42,8 @@ import { StoreService } from './dictionaries/store/store.service';
 import { DateTimeBuilder } from './shared/services/dateTimeBuilder.service';
 import { ConfirmationComponent } from './shared/dialogs/confirmation.component';
 import { PlanComponent } from './plan/plan.component';
+import { HomeComponent } from './home/home.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +52,8 @@ import { PlanComponent } from './plan/plan.component';
     NewCostComponent,
     ConfirmationComponent,
     PlanComponent,
-    EditPlanComponent
+    EditPlanComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
