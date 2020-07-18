@@ -14,7 +14,7 @@ export class CostsService {
   }
 
   getCosts(date: Date): Observable<Cost[]> {
-    return this.httpClient.get<Cost[]>(`/api/costs/${this.dateTimeBuilder.getCurrentDate(date, '-')}`)
+    return this.httpClient.get<Cost[]>(`/api/costs/${this.dateTimeBuilder.getFormattedDate(date, '-')}`)
       .pipe(catchError(this.errorHandler<Cost[]>('getCosts', [])));
   }
 

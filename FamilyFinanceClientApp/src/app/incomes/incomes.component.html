@@ -1,38 +1,83 @@
 <app-toolbar>
-    <div id="actions-container">
-      <mat-form-field id="picker-begin-date" appearance="outline" (click)="incomesBeginDate.open()" >
-        <input matInput [matDatepicker]="incomesBeginDate" [formControl]="incomesBeginDateControl">
-        <mat-datepicker-toggle matSuffix [for]="incomesBeginDate"></mat-datepicker-toggle>
-        <mat-datepicker #incomesBeginDate></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field id="picker-end-date" appearance="outline" (click)="incomesEndDate.open()" >
-        <input matInput [matDatepicker]="incomesEndDate" [formControl]="incomesEndDateControl">
-        <mat-datepicker-toggle matSuffix [for]="incomesEndDate"></mat-datepicker-toggle>
-        <mat-datepicker #incomesEndDate></mat-datepicker>
-      </mat-form-field>
-      <button mat-raised-button color="accent" id="btn-close-month">Загрузить данные</button>
-    </div>
-    <mat-spinner *ngIf="isLoading" color="accent">
-    </mat-spinner>
-    <mat-table *ngIf="!isLoading" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows id="costs-table">
-      <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
-        <mat-cell *matCellDef="let cost">{{cost[gridColumn.propertyName]}}</mat-cell>
-      </ng-container>
-      <ng-container [matColumnDef]="'editColumn'">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Редактировать</mat-header-cell>
-        <mat-cell *matCellDef="let cost" (click)="editCost(cost)"><button mat-icon-button color="primary">
-            <mat-icon>edit</mat-icon>
-          </button></mat-cell>
-      </ng-container>
-      <ng-container [matColumnDef]="'deleteColumn'">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Удалить</mat-header-cell>
-        <mat-cell *matCellDef="let cost" (click)="deleteCost(cost)"><button mat-icon-button id="btn-delete-cost" color="primary">
-            <mat-icon>delete</mat-icon>
-          </button></mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="visibleGridColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let cost; columns: visibleGridColumns;" (dblclick)="editCost(cost)"></mat-row>
-    </mat-table>
-  </app-toolbar>
-  
+  <header id="actions-container">
+    <mat-form-field id="picker-begin-date" appearance="outline" (click)="incomesBeginDate.open()">
+      <input matInput [matDatepicker]="incomesBeginDate" [formControl]="incomesBeginDateControl">
+      <mat-datepicker-toggle matSuffix [for]="incomesBeginDate"></mat-datepicker-toggle>
+      <mat-datepicker #incomesBeginDate></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field id="picker-end-date" appearance="outline" (click)="incomesEndDate.open()">
+      <input matInput [matDatepicker]="incomesEndDate" [formControl]="incomesEndDateControl">
+      <mat-datepicker-toggle matSuffix [for]="incomesEndDate"></mat-datepicker-toggle>
+      <mat-datepicker #incomesEndDate></mat-datepicker>
+    </mat-form-field>
+    <button mat-raised-button color="accent" id="btn-close-month" (click)="loadData()">Загрузить данные</button>
+  </header>
+  <mat-spinner *ngIf="isLoading" color="accent">
+  </mat-spinner>
+  <main *ngIf="!isLoading">
+    <mat-card>
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows id="incomes-table">
+        <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
+          <mat-cell *matCellDef="let income">{{income[gridColumn.propertyName]}}</mat-cell>
+        </ng-container>
+        <ng-container [matColumnDef]="'editColumn'">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Редактировать</mat-header-cell>
+          <mat-cell *matCellDef="let income" (click)="editIncome(income)"><button mat-icon-button color="primary">
+              <mat-icon>edit</mat-icon>
+            </button></mat-cell>
+        </ng-container>
+        <ng-container [matColumnDef]="'deleteColumn'">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Удалить</mat-header-cell>
+          <mat-cell *matCellDef="let income" (click)="deleteIncome(income)"><button mat-icon-button
+              id="btn-delete-income" color="primary">
+              <mat-icon>delete</mat-icon>
+            </button></mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="visibleGridColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let income; columns: visibleGridColumns;" (dblclick)="editIncome(income)"></mat-row>
+      </mat-table>
+    </mat-card>
+    <mat-card>
+      <form (ngSubmit)="saveIncome()" [formGroup]="incomeFormGroup">
+        <mat-form-field>
+          <input matInput placeholder="Сумма дохода" type="number" value="0" min="1" required name="incomeAmount"
+            [formControl]="incomeAmountControl">
+        </mat-form-field>
+        <mat-error *ngIf="incomeAmountControl.hasError('required')">Укажите сумму дохода!
+        </mat-error>
+        <mat-error *ngIf="incomeAmountControl.hasError('min')">Сумма дохода должна быть больше 0!
+        </mat-error>
+        <mat-form-field>
+          <textarea matInput rows="3" cols="12" placeholder="Комментарий" name="comment" [formControl]="commentControl">
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Тип поступлений" aria-label="Тип поступлений"
+          [matAutocomplete]="autocompleteTemplateRefId" [formControl]="incomeTypeControl" name="incomeType">
+        <button mat-button *ngIf="incomeTypeControl.dirty" matSuffix mat-icon-button aria-label="Очистить"
+          (click)="clearIncomeTypeControl()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete #autocompleteTemplateRefId="matAutocomplete" [displayWith]="displayIncomeType"
+          (optionSelected)="incomeTypeChoosed($event)">
+          <mat-option *ngFor="let incomeType of filteredIncomeTypes | async" [value]="incomeType">
+            {{incomeType.name}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="incomeTypeControl.hasError('required')">Укажите тип дохода!
+        </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" (click)="incomeDate.open()">
+          <input matInput [matDatepicker]="incomeDate" [formControl]="incomeDateControl">
+          <mat-datepicker-toggle matSuffix [for]="incomeDate"></mat-datepicker-toggle>
+          <mat-datepicker #incomeDate></mat-datepicker>
+        </mat-form-field>
+        <mat-error *ngIf="incomeDateControl.hasError('required')">Укажите дату дохода!
+        </mat-error>
+        <div>
+          <button type="submit" mat-raised-button color="primary" [disabled]="incomeFormGroup.invalid">Сохранить</button>
+        </div>
+      </form>
+    </mat-card>
+  </main>
+</app-toolbar>

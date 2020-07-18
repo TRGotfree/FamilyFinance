@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DateTimeBuilder {
 
-  public getCurrentDate(date: Date, divider= '') {
+  public getFormattedDate(date: Date, divider= '') {
     const year = date.getFullYear().toString();
     const monthNumber = date.getMonth() + 1;
     const month = monthNumber.toString().length === 1 ?
