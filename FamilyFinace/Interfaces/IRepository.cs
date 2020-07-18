@@ -58,5 +58,7 @@ namespace FamilyFinace.Interfaces
         Task DeletePlan(int planId);
 
         Task<IEnumerable<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year);
+
+        Task<Statistic> GetStatistic(int month, int year);
     }
 }

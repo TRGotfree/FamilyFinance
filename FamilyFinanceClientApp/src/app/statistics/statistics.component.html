@@ -1,0 +1,41 @@
+<app-toolbar>
+    <section id="container-main">
+        <div id="container-cards">
+            <mat-card id="card-income">
+                <mat-card-header>
+                    <mat-card-title>Доход и остаток средств</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    {{profitAmount}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card id="card-plan">
+                <mat-card-header>
+                    <mat-card-title>План</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    {{planAmount}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card id="card-costs">
+                <mat-card-header>
+                    <mat-card-title>Расход</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    {{costsAmount}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="card-different" [ngClass]="{'card-minus-different': !(different >= 0)}">
+                <mat-card-header>
+                    <mat-card-title>Разница</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    {{different}}
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div id="container-charts">
+
+        </div>
+    </section>
+</app-toolbar>

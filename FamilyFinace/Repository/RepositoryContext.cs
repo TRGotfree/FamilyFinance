@@ -21,7 +21,6 @@ namespace FamilyFinace.Repository
         public DbSet<Store> Store { get; set; }
         public DbSet<Cost> Cost { get; set; }
         public DbSet<Income> Income { get; set; }
-
         public DbSet<Plan> Plan { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -157,8 +157,6 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
-
-
         public async Task<IEnumerable<CostCategory>> GetCostCategories()
         {
             return await repository.CostCategory.Where(c => !c.IsRemoved).ToListAsync();
@@ -307,6 +305,16 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
 
             return store;
+        }
+
+        public async Task<Statistic> GetStatistic(int month, int year)
+        {
+            Statistic statistic = new Statistic();
+            statistic.CostTotal = await repository.Cost.Where(c => c.Date.Month == month && c.Date.Year == year).SumAsync(c => c.Amount);
+            statistic.PlanTotal = await repository.Plan.Where(p => p.Month == month && p.Year == year).SumAsync(p => p.Amount);
+            statistic.IncomeTotal = await repository.Income.Where(i => i.Date.Month == month && i.Date.Year == year).SumAsync(i => i.Amount);
+
+            return statistic;
         }
     }
 }

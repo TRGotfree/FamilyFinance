@@ -4,8 +4,7 @@ import { MenuItem } from '../models/menuItem.model';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
 
@@ -16,6 +15,7 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
     if (!this.menuItems || this.menuItems.length === 0) {
       this.menuItems = [
+        new MenuItem('/statistics', 'Статистика', 'assessment'),
         new MenuItem('/costs', 'Расходы', 'trending_down'),
         new MenuItem('/plans', 'План', 'done_all'),
         new MenuItem('/incomes', 'Доход', 'trending_up'),

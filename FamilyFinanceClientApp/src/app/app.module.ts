@@ -22,6 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -42,7 +43,7 @@ import { StoreService } from './dictionaries/store/store.service';
 import { DateTimeBuilder } from './shared/services/dateTimeBuilder.service';
 import { ConfirmationComponent } from './shared/dialogs/confirmation.component';
 import { PlanComponent } from './plan/plan.component';
-import { HomeComponent } from './home/home.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { HomeComponent } from './home/home.component';
     ConfirmationComponent,
     PlanComponent,
     EditPlanComponent,
-    HomeComponent
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +79,8 @@ import { HomeComponent } from './home/home.component';
     MatExpansionModule,
     MatAutocompleteModule,
     MatDividerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule
   ],
   providers: [
     CostsService,
