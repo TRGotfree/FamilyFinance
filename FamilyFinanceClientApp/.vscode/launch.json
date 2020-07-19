@@ -13,7 +13,8 @@
           "/./*": "${webRoot}/*",
           "/src/*": "${webRoot}/*",
           "/*": "*",
-          "/./~/*": "${webRoot}/node_modules/*"
+          "/./~/*": "${webRoot}/node_modules/*",
+          "*": "${webRoot}/*"
         }
       },
       {

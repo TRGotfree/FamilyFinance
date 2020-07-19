@@ -41,13 +41,13 @@ namespace FamilyFinace.Interfaces
 
         Task DeletePayType(int payTypeId);
 
-        Task<IEnumerable<Income>> GetIncomes();
+        Task<List<Income>> GetIncomes(DateTime beginDate, DateTime endDate);
 
         Task<Income> AddIncome(Income income);
 
         Task<Income> UpdateIncome(Income income);
 
-        Task DeleteIncome(Income income);
+        Task DeleteIncome(int incomeId);
 
         Task<Plan> AddPlan(Plan plan);
 

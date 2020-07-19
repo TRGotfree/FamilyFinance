@@ -17,5 +17,11 @@ namespace FamilyFinace.Interfaces
         public List<DTOModels.Plan> RangeOfModelsPlanToRangeOfDTOPlans(IEnumerable<Models.Plan> modelPlans);
         public List<Models.Plan> RangeOfDTOModelsPlanToRangeOfModelPlans(IEnumerable<DTOModels.Plan> dtoPlans);
 
+
+        public DTOModels.Income FromModelIncomeToDTOModelIncome(Models.Income income);
+        public Models.Income FromDTOModelIncomeToModelIncome(DTOModels.Income income);
+        public List<DTOModels.Income> RangeOfModelsIncomesToDTOIncomes(IEnumerable<Models.Income> incomes);
+        public List<Models.Income> RangeOfDTOModelsIncomesToModelsIncomes(IEnumerable<DTOModels.Income> incomes);
+
     }
 }

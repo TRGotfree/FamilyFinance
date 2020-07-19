@@ -16,14 +16,12 @@ namespace FamilyFinace.Services
 {
     public class RepositoryProvider : IRepository
     {
-
         private readonly RepositoryContext repository;
 
         public RepositoryProvider(RepositoryContext repositoryContext)
         {
             this.repository = repositoryContext ?? throw new ArgumentNullException(nameof(repositoryContext));
         }
-
         public async Task<Cost> AddCost(Cost cost)
         {
             if (cost == null)
@@ -45,9 +43,6 @@ namespace FamilyFinace.Services
 
             return costCategory;
         }
-
-
-
         public async Task<Income> AddIncome(Income income)
         {
             if (income == null)
@@ -55,7 +50,7 @@ namespace FamilyFinace.Services
 
             await repository.AddAsync(income);
             await repository.SaveChangesAsync();
-
+            
             return income;
         }
 
@@ -111,12 +106,10 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteIncome(Income income)
+        public async Task DeleteIncome(int incomeId)
         {
-            if (income == null)
-                throw new ArgumentNullException(nameof(income));
-
-            repository.Remove(income);
+            var incomeToDelete = await repository.Income.FirstOrDefaultAsync(i => i.Id == incomeId);
+            repository.Remove(incomeToDelete);
             await repository.SaveChangesAsync();
         }
 
@@ -205,9 +198,9 @@ namespace FamilyFinace.Services
 
             return await plansQuery.OrderBy(p => p.Category.CategoryName).ToListAsync();
         }
-        public async Task<IEnumerable<Income>> GetIncomes()
+        public Task<List<Income>> GetIncomes(DateTime beginDate, DateTime endDate)
         {
-            return await repository.Income.ToListAsync();
+            return repository.Income.Where(i => i.Date >= beginDate && i.Date <= endDate).ToListAsync();
         }
 
         public async Task<IEnumerable<PayType>> GetPayTypes()

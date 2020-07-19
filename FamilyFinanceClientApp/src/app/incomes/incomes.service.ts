@@ -5,6 +5,7 @@ import { DateTimeBuilder } from '../shared/services/dateTimeBuilder.service';
 import { Income } from './income.model';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { TableColumnAttribute } from '../shared/models/tableColumnAttribute';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesService {
@@ -19,13 +20,18 @@ export class IncomesService {
             .pipe(catchError(this.errorHandler<Income[]>('getIncomes')));
     }
 
+    getIncomesMeta(): Observable<TableColumnAttribute[]> {
+        return this.httpClient.get<TableColumnAttribute[]>('/api/incomes/meta')
+            .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getIncomesMeta')));
+    }
+
     addIncome(income: Income): Observable<Income> {
         return this.httpClient.post<Income>('/api/incomes', income)
             .pipe(catchError(this.errorHandler<Income>('addIncome')));
     }
 
     editIncome(income: Income): Observable<Income> {
-        return this.httpClient.post<Income>('/api/incomes', income)
+        return this.httpClient.put<Income>('/api/incomes', income)
             .pipe(catchError(this.errorHandler<Income>('editIncome')));
     }
 

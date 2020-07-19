@@ -34,11 +34,26 @@ namespace FamilyFinace.Repository
             modelBuilder.Entity<PayType>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<PayType>().HasIndex(p => p.Name).IsUnique();
             modelBuilder.Entity<PayType>().Property(p => p.IsRemoved).HasDefaultValue(false);
+            modelBuilder.Entity<PayType>().HasData(new PayType { Id = 1, Name = "Наличность", IsRemoved = false });
+            modelBuilder.Entity<PayType>().HasData(new PayType { Id = 2, Name = "Карта", IsRemoved = false });
+            modelBuilder.Entity<PayType>().HasData(new PayType { Id = 3, Name = "Payme", IsRemoved = false });
+            modelBuilder.Entity<PayType>().HasData(new PayType { Id = 4, Name = "Click", IsRemoved = false });
+            modelBuilder.Entity<PayType>().HasData(new PayType { Id = 5, Name = "Apelsin", IsRemoved = false });
 
             modelBuilder.Entity<Store>().HasKey(s => s.Id);
             modelBuilder.Entity<Store>().Property(s => s.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Store>().HasIndex(s => s.Name).IsUnique();
             modelBuilder.Entity<Store>().Property(s => s.IsRemoved).HasDefaultValue(false);
+            modelBuilder.Entity<Store>().HasData(
+                new Models.Store { Id = 1, Name = "Artyemka plyus", IsRemoved = false },
+                new Models.Store { Id = 2, Name = "Korzinka.uz", IsRemoved = false },
+                new Models.Store { Id = 3, Name = "Makro", IsRemoved = false },
+                new Models.Store { Id = 4, Name = "Green Apple", IsRemoved = false },
+                new Models.Store { Id = 5, Name = "Magnit", IsRemoved = false },
+                new Models.Store { Id = 6, Name = "Tegen", IsRemoved = false },
+                new Models.Store { Id = 7, Name = "Full Market", IsRemoved = false },
+                new Models.Store { Id = 8, Name = "Аптека", IsRemoved = false });
+
 
             modelBuilder.Entity<Cost>().HasKey(c => c.Id);
             modelBuilder.Entity<Cost>().Property(c => c.Id).ValueGeneratedOnAdd();

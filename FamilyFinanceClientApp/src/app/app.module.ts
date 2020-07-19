@@ -44,6 +44,7 @@ import { DateTimeBuilder } from './shared/services/dateTimeBuilder.service';
 import { ConfirmationComponent } from './shared/dialogs/confirmation.component';
 import { PlanComponent } from './plan/plan.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { IncomesComponent } from './incomes/incomes.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
     ConfirmationComponent,
     PlanComponent,
     EditPlanComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    IncomesComponent
   ],
   imports: [
     BrowserModule,

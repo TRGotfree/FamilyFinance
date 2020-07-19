@@ -136,5 +136,81 @@ namespace FamilyFinace.Services
 
             return plans;
         }
+
+        public DTOModels.Income FromModelIncomeToDTOModelIncome(Models.Income income)
+        {
+            if (income == null)
+                throw new ArgumentNullException(nameof(income));
+
+            var dtoIncome = new DTOModels.Income();
+            dtoIncome.Amount = income.Amount;
+            dtoIncome.Comment = income.Comment;
+            dtoIncome.Date = income.Date;
+            dtoIncome.Id = income.Id;
+            dtoIncome.PayType = income.PayType?.Name;
+            dtoIncome.PayTypeId = income.PayTypeId;
+
+            return dtoIncome;
+        }
+
+        public Models.Income FromDTOModelIncomeToModelIncome(DTOModels.Income income)
+        {
+            if (income == null)
+                throw new ArgumentNullException(nameof(income));
+
+            var modelIncome = new Models.Income();
+            modelIncome.Amount = income.Amount;
+            modelIncome.Comment = income.Comment;
+            modelIncome.Date = income.Date;
+            modelIncome.Id = income.Id;
+            modelIncome.PayTypeId = income.PayTypeId;
+
+            return modelIncome;
+        }
+
+        public List<DTOModels.Income> RangeOfModelsIncomesToDTOIncomes(IEnumerable<Models.Income> incomes)
+        {
+            if (incomes == null)
+                throw new ArgumentNullException(nameof(incomes));
+
+            List<DTOModels.Income> dtoIncomes = new List<DTOModels.Income>(0);
+            foreach (var income in incomes)
+            {
+                dtoIncomes.Add(
+                    new DTOModels.Income
+                    {
+                        Id = income.Id,
+                        Amount = income.Amount,
+                        Comment = income.Comment,
+                        Date = income.Date,
+                        PayType = income.PayType?.Name,
+                        PayTypeId = income.PayTypeId
+                    });
+            }
+
+            return dtoIncomes;
+        }
+
+        public List<Models.Income> RangeOfDTOModelsIncomesToModelsIncomes(IEnumerable<DTOModels.Income> incomes)
+        {
+            if (incomes == null)
+                throw new ArgumentNullException(nameof(incomes));
+
+            List<Models.Income> modelsIncomes = new List<Models.Income>(0);
+            foreach (var income in incomes)
+            {
+                modelsIncomes.Add(
+                    new Models.Income
+                    {
+                        Id = income.Id,
+                        Amount = income.Amount,
+                        Comment = income.Comment,
+                        Date = income.Date,
+                        PayTypeId = income.PayTypeId
+                    });
+            }
+
+            return modelsIncomes;
+        }
     }
 }

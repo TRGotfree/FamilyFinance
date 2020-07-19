@@ -4,6 +4,7 @@ import { CostsComponent } from './costs/costs.component';
 import { PlanComponent } from './plan/plan.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { PageNotFoundComponent } from './page_not_found/page_not_found.component';
+import { IncomesComponent } from './incomes/incomes.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,9 @@ const routes: Routes = [
   },
   {
     path: 'plans', component: PlanComponent
+  },
+  {
+    path: 'incomes', component: IncomesComponent
   },
   {
     path: '**', component: PageNotFoundComponent,
