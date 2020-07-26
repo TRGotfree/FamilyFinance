@@ -22,12 +22,14 @@ namespace FamilyFinace.DTOModels
         public string SubCategoryName { get; set; }
 
         [Display(Name = "Макс. значение затрат за прошлый период")]
-        public decimal MaxFactAmount { get; set; }
+        public string MaxFactAmount { get; set; }
 
         [Required]
         [Range(1, double.MaxValue)]
-        [Display(Name ="Сумма по плану")]
         public decimal Amount { get; set; }
+
+        [Display(Name = "Сумма по плану")]
+        public string AmountToDisplay { get; set; }
 
         [Required]
         [Range(1, 12)]

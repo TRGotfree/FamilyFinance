@@ -3,8 +3,9 @@ export class Plan {
   categoryId: number;
   categoryName: string;
   subCategoryName: string;
-  maxFactAmount: number;
+  maxFactAmount: string;
   amount: number;
+  amountToDisplay: string;
   month: number;
   year: number;
 }

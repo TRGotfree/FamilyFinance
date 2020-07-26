@@ -36,6 +36,7 @@ namespace FamilyFinace.Services
             DTOModels.Cost dtoModelCost = new DTOModels.Cost
             {
                 Amount = modelCost.Amount,
+                AmountToDisplay = modelCost.Amount.ToString("N2"),
                 Category = modelCost.CostCategory?.CategoryName,
                 CategoryId = modelCost.CostCategoryId,
                 CostSubCategory = modelCost.CostCategory?.SubCategoryName,
@@ -101,7 +102,8 @@ namespace FamilyFinace.Services
             return new DTOModels.Plan()
             {
                 Amount = modelPlan.Amount,
-                MaxFactAmount = modelPlan.MaxAmountOfCost,
+                AmountToDisplay = modelPlan.Amount.ToString("N0"),
+                MaxFactAmount = modelPlan.MaxAmountOfCost.ToString("N0"),
                 CategoryId = modelPlan.CategoryId,
                 CategoryName = modelPlan.Category?.CategoryName,
                 SubCategoryName = modelPlan.Category?.SubCategoryName,
@@ -149,6 +151,8 @@ namespace FamilyFinace.Services
             dtoIncome.Id = income.Id;
             dtoIncome.PayType = income.PayType?.Name;
             dtoIncome.PayTypeId = income.PayTypeId;
+            dtoIncome.AmountToDisplay = income.Amount.ToString("N2");
+            dtoIncome.ShortComment = income.Comment?.Length > 10 ? income.Comment.Substring(10) : income.Comment;
 
             return dtoIncome;
         }
@@ -181,10 +185,12 @@ namespace FamilyFinace.Services
                     {
                         Id = income.Id,
                         Amount = income.Amount,
+                        AmountToDisplay = income.Amount.ToString("N2"),
                         Comment = income.Comment,
                         Date = income.Date,
                         PayType = income.PayType?.Name,
-                        PayTypeId = income.PayTypeId
+                        PayTypeId = income.PayTypeId,
+                        ShortComment = income.Comment?.Length > 10 ? income.Comment.Substring(0, 10) : income.Comment
                     });
             }
 

@@ -92,7 +92,7 @@ import { IncomesComponent } from './incomes/incomes.component';
     PlanService,
     DateTimeBuilder,
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
-    { provide: DEFAULT_CURRENCY_CODE, useValue: 'UZS' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: '' },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,

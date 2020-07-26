@@ -131,4 +131,11 @@ export class CostsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getTotalCosts() {
+    let total = 0;
+    this.costs.map(v => total += v.amount)
+
+    return total;
+  }
+
 }

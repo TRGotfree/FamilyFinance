@@ -68,6 +68,7 @@ export class PlanComponent implements OnInit {
         this.snackBar.open('Не удалось загрузить данные по планам затрат!', 'OK', { duration: 3000, verticalPosition: 'bottom' });
         return;
       }
+      this.plans = plans;
       this.dataSource = new MatTableDataSource(plans);
       this.dataSource.sort = this.sort;
     },
@@ -121,6 +122,10 @@ export class PlanComponent implements OnInit {
           if (!updatedPlan) {
             this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
           }
+
+          this.plans[this.plans.findIndex(p => p.id === updatedPlan.id)] = updatedPlan;
+          this.dataSource = new MatTableDataSource(this.plans);
+
         }, error => {
           this.logger.logError(error);
           this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
@@ -130,6 +135,10 @@ export class PlanComponent implements OnInit {
           if (!newPlan) {
             this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
           }
+
+          this.plans.push(newPlan);
+          this.dataSource = new MatTableDataSource(this.plans);
+
         }, error => {
           this.logger.logError(error);
           this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
@@ -151,10 +160,17 @@ export class PlanComponent implements OnInit {
         return;
       }
       this.planService.deletePlan(plan.id).subscribe(() => {
-        plan.id = 0;
-        plan.amount = 0;
+        this.plans = this.plans.filter(p => p.id !== plan.id);
+        this.dataSource = new MatTableDataSource(this.plans);
       });
     });
+  }
+
+  getTotalPlans() {
+    let total = 0;
+    this.plans.map(v => total += v.amount)
+
+    return total;
   }
 
   private getYears(): number[] {

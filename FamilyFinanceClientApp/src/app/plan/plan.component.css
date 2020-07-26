@@ -35,6 +35,10 @@
   margin-top: 25px;
 }
 
+#btn-close-month {
+  min-width: 130px;
+}
+
 mat-spinner {
   margin-top: 25vh;
   margin-left: 45vw;
@@ -81,3 +85,13 @@ mat-row:hover {
 #btn-delete-cost mat-icon {
   color: #bb3268;
 }
+
+mat-footer-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFD740;
+  font-weight: 500;
+}
+

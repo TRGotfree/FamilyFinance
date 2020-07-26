@@ -33,8 +33,9 @@ namespace FamilyFinace.Controllers
         {
             try
             {
-                var incomes = await repository.GetIncomes(beginDate, endDate);
-                return Ok(incomes);
+                var incomesData = await repository.GetIncomes(beginDate, endDate);
+                var dtoIncomes = modelTransformer.RangeOfModelsIncomesToDTOIncomes(incomesData);
+                return Ok(dtoIncomes);
             }
             catch (Exception ex)
             {
@@ -96,7 +97,7 @@ namespace FamilyFinace.Controllers
                 var income = modelTransformer.FromDTOModelIncomeToModelIncome(editedIncome);
                 var savedIncome = await repository.UpdateIncome(income);
 
-                if (savedIncome != null)
+                if (savedIncome == null)
                     return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 
                 return StatusCode((int)HttpStatusCode.Created, modelTransformer.FromModelIncomeToDTOModelIncome(savedIncome));

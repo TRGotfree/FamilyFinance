@@ -83,6 +83,14 @@ mat-header-row > mat-header-cell {
     text-align: center;
 }
 
+mat-cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
 #form-edit-income {
     width: 100%;
     height: 100%;
@@ -99,3 +107,13 @@ mat-header-row > mat-header-cell {
 #container-income-edit-actions > button {
     min-width: 180px;
 }
+
+mat-footer-cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFD740;
+    font-weight: 500;
+  }
+  

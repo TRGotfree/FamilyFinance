@@ -14,13 +14,15 @@ namespace FamilyFinace.DTOModels
         
         [Required]
         [Range(1, double.MaxValue)]
-        [Display(Name = "Сумма")]
         public decimal Amount { get; set; }
 
         [Required]
         [Display(Name = "Дата")]
         public DateTime Date { get; set; }
-        
+
+        [Display(Name = "Сумма")]
+        public string AmountToDisplay { get; set; }
+
         [Required]
         [Range(1, int.MaxValue)]
         public int PayTypeId { get; set; }
@@ -29,7 +31,9 @@ namespace FamilyFinace.DTOModels
         public string PayType { get; set; }
         
         [MaxLength(2000)]
-        [Display(Name = "Комментарий")]
         public string Comment { get; set; }
+
+        [Display(Name = "Комментарий")]
+        public string ShortComment { get; set; }
     }
 }

@@ -13,6 +13,8 @@ import { DateTimeBuilder } from '../shared/services/dateTimeBuilder.service';
 import { MomentInputObject, Moment, MomentInput, MomentObjectOutput } from 'moment';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from '../shared/dialogs/confirmation.component';
 
 @Component({
     templateUrl: 'incomes.component.html',
@@ -22,7 +24,13 @@ import * as moment from 'moment';
 export class IncomesComponent implements OnInit {
 
     isLoading = false;
-    selectedIncome: Income = { id: 0, amount: 0, comment: '', date: '', payTypeId: 0, payType: '' };
+    selectedIncome: Income = {
+        id: 0,
+        amount: 0, comment: '',
+        date: '', payTypeId: 0,
+        payType: '', amountToDisplay: '0',
+        shortComment: ''
+    };
     incomeFormHeader = 'Новый доход'
     dataSource = new MatTableDataSource([]);
     incomes: Income[];
@@ -43,22 +51,12 @@ export class IncomesComponent implements OnInit {
     incomeDateControl: FormControl;
 
     constructor(private incomesService: IncomesService, private payTypesService: PayTypeService,
-        private dateTimeBuilder: DateTimeBuilder, private snackBar: MatSnackBar) {
+        private dateTimeBuilder: DateTimeBuilder, private snackBar: MatSnackBar, private dialogRef: MatDialog) {
 
         this.incomesBeginDateControl = new FormControl(this.getPreviousMonthbeginDate());
         this.incomesEndDateControl = new FormControl(moment());
 
-        this.incomeAmountControl = new FormControl(0, [Validators.required, Validators.min(1)]);
-        this.commentControl = new FormControl('', [Validators.maxLength(2000)]);
-        this.incomeTypeControl = new FormControl(null, [Validators.required]);
-        this.incomeDateControl = new FormControl(moment(), [Validators.required]);
-
-        this.incomeFormGroup = new FormGroup({
-            incomeAmount: this.incomeAmountControl,
-            incomeType: this.incomeTypeControl,
-            incomeDate: this.incomeDateControl,
-            comment: this.commentControl
-        });
+        this.setControlsWithDefaultsValues();
 
         this.filteredIncomeTypes = this.incomeTypeControl.valueChanges
             .pipe(startWith(''),
@@ -95,6 +93,10 @@ export class IncomesComponent implements OnInit {
         this.isLoading = true;
 
         this.incomesService.getIncomes(this.incomesBeginDateControl.value.toDate(), this.incomesEndDateControl.value.toDate())
+            .pipe(map(i => {
+                i.forEach(d => d.date = d.date.substring(0, 10));
+                return i;
+            }))
             .subscribe(incomesData => {
                 if (!incomesData) {
                     this.snackBar.open('Не удалось загрузить данные по доходам!', 'OK', { duration: 3000 });
@@ -134,7 +136,7 @@ export class IncomesComponent implements OnInit {
             return;
         }
 
-        if (this.selectedIncome.id <= 0) {
+        if (!this.selectedIncome || this.selectedIncome.id <= 0) {
 
             const newIncome: Income = {
                 id: 0,
@@ -142,7 +144,9 @@ export class IncomesComponent implements OnInit {
                 date: this.dateTimeBuilder.getFormattedDate(this.incomeDateControl.value.toDate(), '-'),
                 payTypeId: this.incomeTypeControl.value.id,
                 payType: this.incomeTypeControl.value.name,
-                comment: this.commentControl.value
+                comment: this.commentControl.value,
+                amountToDisplay: null,
+                shortComment: null
             }
 
             this.incomesService.addIncome(newIncome).subscribe(addedIncome => {
@@ -151,10 +155,17 @@ export class IncomesComponent implements OnInit {
                     return;
                 }
 
-                this.incomes.push(addedIncome);
-                this.dataSource = new MatTableDataSource(this.incomes);
+                newIncome.date = addedIncome.date.substring(0, 10);
+                newIncome.id = addedIncome.id;
+                newIncome.amountToDisplay = addedIncome.amountToDisplay;
+                newIncome.shortComment = addedIncome.shortComment;
 
-            }, error => { 
+                this.incomes.push(newIncome);
+                this.dataSource = new MatTableDataSource(this.incomes);
+                this.selectedIncome = null;
+                this.setControlsWithDefaultsValues();
+
+            }, error => {
                 this.snackBar.open('Не удалось сохранить данные по доходу!', 'OK', { duration: 3000 });
             });
         } else {
@@ -165,29 +176,76 @@ export class IncomesComponent implements OnInit {
                 date: this.dateTimeBuilder.getFormattedDate(this.incomeDateControl.value.toDate(), '-'),
                 payTypeId: this.incomeTypeControl.value.id,
                 payType: this.incomeTypeControl.value.name,
-                comment: this.commentControl.value
+                comment: this.commentControl.value,
+                amountToDisplay: this.selectedIncome.amountToDisplay,
+                shortComment: this.selectedIncome.shortComment
             }
 
-            this.incomesService.editIncome(editedIncome).subscribe(editedIncome => {
-                if (!editedIncome) {
+            this.incomesService.editIncome(editedIncome).subscribe(editedIncomeData => {
+                if (!editedIncomeData) {
                     this.snackBar.open('Не удалось сохранить данные по доходу!', 'OK', { duration: 3000 });
                     return;
                 }
 
-                let incomeToUpdate = this.incomes.find(i => i.id === editedIncome.id);
-                incomeToUpdate = editedIncome;
-
+                editedIncome.amountToDisplay = editedIncomeData.amountToDisplay;
+                this.incomes[this.incomes.findIndex(i => i.id === editedIncomeData.id)] = editedIncome;
+                this.dataSource = new MatTableDataSource(this.incomes);
+                this.selectedIncome = null;
+                this.incomeFormGroup.reset();
+                this.setControlsWithDefaultsValues();
             });
         }
 
     }
 
     editIncome(income: Income) {
+        if (!income || !income.id) {
+            return;
+        }
 
+        this.selectedIncome = income;
+        this.incomeAmountControl.setValue(this.selectedIncome.amount);
+        this.commentControl.setValue(this.selectedIncome.comment);
+        this.incomeDateControl.setValue(moment(this.selectedIncome.date));
+
+        const payType = new PayType();
+        payType.id = this.selectedIncome.payTypeId;
+        payType.name = this.selectedIncome.payType;
+
+        this.incomeTypeControl.setValue(payType);
     }
 
     deleteIncome(income: Income) {
+        if (!income || !income.id) {
+            return;
+        }
 
+        const confirmationDialog = this.dialogRef.open(ConfirmationComponent, { data: { caption: 'Внимание!', message: 'Вы уверены, что хотите удалить данные по доходу?' } });
+        confirmationDialog.afterClosed()
+            .subscribe(res => {
+                if (!res) {
+                    return;
+                }
+
+                this.incomesService.deleteIncome(income.id).subscribe(() => {
+                    this.incomes = this.incomes.filter(i => i.id !== income.id);
+                    this.dataSource = new MatTableDataSource(this.incomes);
+                }, error => {
+                    this.snackBar.open('Не удалось удалить данные дохода!', 'OK', { duration: 3000 });
+                });
+            });
+
+    }
+
+    displayIncomeType(payType: PayType) {
+        return payType && payType.name ? payType.name : '';
+    }
+
+    getTotalIncomes() {
+        let total = 0;
+        this.incomes.map(v => total += v.amount)
+
+        return total;
     }
 
     private filterIncome(value: string) {
@@ -195,14 +253,26 @@ export class IncomesComponent implements OnInit {
         return this.payTypes.filter(pt => pt.name.toLowerCase().includes(filteredValue));
     }
 
-    displayIncomeType(payType: PayType) {
-        return payType && payType.name ? payType.name : '';
-    }
-
     private getPreviousMonthbeginDate() {
         // let currentDate = moment();
         // let previousMonth = currentDate.month();
         // let year = currentDate.year();
         return moment().add(-1, 'M');
+    }
+
+    private setControlsWithDefaultsValues() {
+        this.incomeAmountControl = new FormControl(0, [Validators.required, Validators.min(1)]);
+
+        this.commentControl = new FormControl('', [Validators.maxLength(2000)]);
+        this.incomeTypeControl = new FormControl('', [Validators.required]);
+
+        this.incomeDateControl = new FormControl(moment(), [Validators.required]);
+
+        this.incomeFormGroup = new FormGroup({
+            incomeAmount: this.incomeAmountControl,
+            incomeType: this.incomeTypeControl,
+            incomeDate: this.incomeDateControl,
+            comment: this.commentControl
+        });
     }
 }

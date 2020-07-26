@@ -9,7 +9,7 @@ namespace FamilyFinace.Interfaces
 {
     public interface IRepository
     {
-        Task<IEnumerable<Cost>> GetCosts(DateTime date);
+        Task<List<Cost>> GetCosts(DateTime date);
         
         Task<Cost> AddCost(Cost cost);
         
@@ -57,7 +57,7 @@ namespace FamilyFinace.Interfaces
 
         Task DeletePlan(int planId);
 
-        Task<IEnumerable<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year);
+        Task<List<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year);
 
         Task<Statistic> GetStatistic(int month, int year);
     }

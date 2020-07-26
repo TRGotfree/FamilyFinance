@@ -4,6 +4,7 @@ export class Cost {
   public category: string;
   public costSubCategory: string;
   public amount: number;
+  public amountToDisplay: string;
   public count: string;
   public date: string;
   public comment: string;

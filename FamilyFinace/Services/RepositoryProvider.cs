@@ -155,7 +155,7 @@ namespace FamilyFinace.Services
             return await repository.CostCategory.Where(c => !c.IsRemoved).ToListAsync();
         }
 
-        public async Task<IEnumerable<Cost>> GetCosts(DateTime date)
+        public Task<List<Cost>> GetCosts(DateTime date)
         {
             var costsCategoriesQuery = repository.CostCategory;
             var costsOnCertainDateQuery = repository.Cost.Include(s => s.Store)
@@ -163,7 +163,7 @@ namespace FamilyFinace.Services
                 .Include(c => c.CostCategory).Where(c => c.Date == date);
 
             var resultQuery = from costCategorie in costsCategoriesQuery
-                              join cd in costsOnCertainDateQuery on costCategorie.Id equals cd.CostCategoryId into c
+                              join cd in costsOnCertainDateQuery.DefaultIfEmpty() on costCategorie.Id equals cd.CostCategoryId into c
                               from cost in c.DefaultIfEmpty()
                               select new Cost
                               {
@@ -180,27 +180,27 @@ namespace FamilyFinace.Services
                                   Store = cost.Store
                               };
 
-            return await resultQuery.OrderBy(cc => cc.CostCategory.CategoryName).ToListAsync();
+            return resultQuery.OrderBy(cc => cc.CostCategory.CategoryName).ToListAsync();
         }
 
-        public async Task<IEnumerable<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year)
+        public Task<List<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year)
         {
             var costCategories = repository.CostCategory.Where(c => !c.IsRemoved);
             var costPlans = repository.Plan.Include(p => p.Category).Where(p => p.Month == month && p.Year == year);
-            var maxCosts = repository.Cost.GroupBy(c => new { c.CostCategoryId, c.Amount }).Select(cc => new Cost { Amount = cc.Max(c => c.Amount), CostCategoryId = cc.Key.CostCategoryId });
+            var maxCosts = repository.Cost.GroupBy(c => c.CostCategoryId ).Select(cc => new Cost { Amount = cc.Max(c => c.Amount), CostCategoryId = cc.Key });
 
             var plansQuery = from categorie in costCategories
                              join p in costPlans on categorie.Id equals p.CategoryId into pl
                              from plan in pl.DefaultIfEmpty()
-                             join c in maxCosts on categorie.Id equals c.CostCategoryId into cc
+                             join mc in maxCosts on categorie.Id equals mc.CostCategoryId into cc
                              from cost in cc.DefaultIfEmpty()
                              select new Plan { Id = plan.Id, Amount = plan.Amount, Category = categorie, CategoryId = categorie.Id, Month = month, Year = year, MaxAmountOfCost = cost.Amount };
 
-            return await plansQuery.OrderBy(p => p.Category.CategoryName).ToListAsync();
+            return plansQuery.OrderBy(p => p.Category.CategoryName).ToListAsync();
         }
         public Task<List<Income>> GetIncomes(DateTime beginDate, DateTime endDate)
         {
-            return repository.Income.Where(i => i.Date >= beginDate && i.Date <= endDate).ToListAsync();
+            return repository.Income.Include(i => i.PayType).Where(i => i.Date >= beginDate && i.Date <= endDate).ToListAsync();
         }
 
         public async Task<IEnumerable<PayType>> GetPayTypes()

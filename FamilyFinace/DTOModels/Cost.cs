@@ -22,8 +22,10 @@ namespace FamilyFinace.DTOModels
 
         [Required]
         [Range(1, int.MaxValue)]
-        [Display(Name = "Сумма")]
         public decimal Amount { get; set; }
+
+        [Display(Name = "Сумма")]
+        public string AmountToDisplay { get; set; }
 
         [Display(Name = "Кол-во")]
         public string Count { get; set; }

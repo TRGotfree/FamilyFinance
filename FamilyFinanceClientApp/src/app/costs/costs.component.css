@@ -81,3 +81,12 @@ mat-row:hover {
 #btn-delete-cost mat-icon {
   color: #BB3268;
 }
+
+mat-footer-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFD740;
+  font-weight: 500;
+}
