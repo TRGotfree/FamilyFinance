@@ -20,7 +20,7 @@
   </div>
   <mat-spinner *ngIf="isLoading" color="accent">
   </mat-spinner>
-  <mat-table *ngIf="!isLoading" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows
+  <mat-table *ngIf="!isLoading && costs && costs.length > 0" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows
     id="costs-table">
     <ng-container *ngFor="let gridColumn of gridColumns; let i = index" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
@@ -34,21 +34,21 @@
     </ng-container>
     <ng-container [matColumnDef]="'editColumn'">
       <mat-header-cell *matHeaderCellDef>Редактировать</mat-header-cell>
-      <mat-cell *matCellDef="let cost" (click)="editCost(cost)"><button mat-icon-button color="primary">
+      <mat-cell *matCellDef="let cost">
+        <button mat-icon-button color="primary" (click)="addCost(cost)">
+          <mat-icon>post_add</mat-icon>
+        </button>
+        <button [disabled]="(!cost || !cost.id)" mat-icon-button color="primary" (click)="editCost(cost)">
           <mat-icon>edit</mat-icon>
-        </button></mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-    <ng-container [matColumnDef]="'deleteColumn'">
-      <mat-header-cell *matHeaderCellDef>Удалить</mat-header-cell>
-      <mat-cell *matCellDef="let cost" (click)="deleteCost(cost)"><button mat-icon-button id="btn-delete-cost"
-          color="primary">
+        </button>
+        <button [disabled]="(!cost || !cost.id)" mat-icon-button color="warn" (click)="deleteCost(cost)">
           <mat-icon>delete</mat-icon>
-        </button></mat-cell>
+        </button>
+      </mat-cell>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="visibleGridColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let cost; columns: visibleGridColumns;" (dblclick)="editCost(cost)"></mat-row>
+    <mat-row *matRowDef="let cost; columns: visibleGridColumns;" (dblclick)="editOrAddCost(cost)"></mat-row>
     <mat-footer-row *matFooterRowDef="visibleGridColumns; sticky: true"></mat-footer-row>
   </mat-table>
 </app-toolbar>

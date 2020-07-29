@@ -68,6 +68,7 @@ export class NewCostComponent implements OnInit {
     }
 
     this.cost.amount = this.amountControl.value;
+    this.cost.amountToDisplay = this.amountControl.value;
     this.cost.count = this.countControl.value;
     this.cost.payTypeId = this.payTypes.find(p => p.name === this.payTypeControl.value).id;
     this.cost.payType = this.payTypeControl.value;

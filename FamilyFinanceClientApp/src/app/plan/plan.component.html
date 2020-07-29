@@ -16,8 +16,8 @@
     <div id="data-period-container">
       <mat-form-field appearance="outline" class="data-period">
         <mat-label>Месяц</mat-label>
-        <input type="text" name="month" #month matInput [formControl]="monthFormControl" [matAutocomplete]="monthAutoComplete"
-          placeholder="Выберите месяц">
+        <input type="text" name="month" #month matInput [formControl]="monthFormControl"
+          [matAutocomplete]="monthAutoComplete" placeholder="Выберите месяц">
         <mat-autocomplete #monthAutoComplete="matAutocomplete">
           <mat-option *ngFor="let month of months" [value]="month">{{month}}</mat-option>
         </mat-autocomplete>
@@ -25,43 +25,41 @@
 
       <mat-form-field appearance="outline" class="data-period">
         <mat-label>Год</mat-label>
-        <input type="text" name="year" #year matInput [formControl]="yearFormControl" [matAutocomplete]="yearAutoComplete"
-          placeholder="Выберите месяц">
+        <input type="text" name="year" #year matInput [formControl]="yearFormControl"
+          [matAutocomplete]="yearAutoComplete" placeholder="Выберите месяц">
         <mat-autocomplete #yearAutoComplete="matAutocomplete">
           <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <button mat-raised-button color="accent" id="btn-close-month" (click)="loadPlans(month.value, year.value)" >Загрузить данные</button>
+      <button mat-raised-button color="accent" id="btn-close-month"
+        (click)="loadPlans(month.value, year.value)">Загрузить данные</button>
     </div>
   </div>
   <mat-spinner *ngIf="isLoading" color="accent">
   </mat-spinner>
-  <mat-table *ngIf="!isLoading" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows
-    id="plan-table">
+  <mat-table *ngIf="!isLoading && plans && plans.length > 0" [dataSource]="dataSource" class="mat-elevation-z8" matSort
+    multiTemplateDataRows id="plan-table">
     <ng-container *ngFor="let gridColumn of gridColumns" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
       <mat-cell *matCellDef="let plan">{{plan[gridColumn.propertyName]}}</mat-cell>
       <div *ngIf="gridColumn.propertyName === 'amountToDisplay'; else elseFooter">
         <mat-footer-cell *matFooterCellDef>Итого: {{getTotalPlans() | currency}}</mat-footer-cell>
-        </div>
-        <ng-template #elseFooter>
-          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-        </ng-template>
+      </div>
+      <ng-template #elseFooter>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-template>
     </ng-container>
     <ng-container [matColumnDef]="'editColumn'">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Редактировать</mat-header-cell>
-      <mat-cell *matCellDef="let plan" (click)="editPlan(plan)"><button mat-icon-button color="primary">
+      <mat-cell *matCellDef="let plan">
+        <button mat-icon-button (click)="editPlan(plan)" color="primary">
           <mat-icon>edit</mat-icon>
-        </button></mat-cell>
-        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-    <ng-container [matColumnDef]="'deleteColumn'">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Удалить</mat-header-cell>
-      <mat-cell *matCellDef="let plan" (click)="deletePlan(plan)"><button mat-icon-button id="btn-delete-cost"
-          color="primary">
+        </button>
+        <button mat-icon-button (click)="deletePlan(plan)" color="warn">
           <mat-icon>delete</mat-icon>
-        </button></mat-cell>
-        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </button>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="visibleGridColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let plan; columns: visibleGridColumns;" (dblclick)="editPlan(plan)"></mat-row>

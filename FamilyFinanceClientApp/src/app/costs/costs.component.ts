@@ -32,7 +32,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   visibleGridColumns: string[];
   gridColumns: TableColumnAttribute[];
   searchValueControl = new FormControl('');
-  requiredColumnNames = ['editColumn', 'deleteColumn'];
+  requiredColumnNames = ['editColumn'];
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -85,7 +85,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
     this.searchValueControl.setValue('');
   }
 
-  editCost(cost: Cost) {
+  addCost(cost: Cost) {
     const costDate = new Date(cost.date);
     const costControlDate = this.costsDateControl.value as Date;
 
@@ -97,18 +97,59 @@ export class CostsComponent implements OnInit, AfterViewInit {
     cost.date = costDate.getFullYear() === 1 ? costControlDate.toISOString().substring(0, 10) : cost.date;
 
     const newCostDialog = this.dialogRef.open(NewCostComponent, { width: '500px', height: '550px', data: cost });
-    newCostDialog.afterClosed().subscribe(editedCost => {
-      if (!editedCost) {
+    newCostDialog.afterClosed().subscribe(newCost => {
+      if (!newCost) {
         return;
       }
+
+      this.costs.push(newCost);
+      this.dataSource.data = this.costs;
 
       this.resetFilter();
     }, error => this.logger.logError(error));
   }
 
+  editCost(cost: Cost) {
+
+    if (!cost || !cost.id) {
+      return;
+    }
+
+    const costDate = new Date(cost.date);
+    const costControlDate = this.costsDateControl.value as Date;
+
+    if (costDate.getFullYear() === 1 && !costControlDate) {
+      this.snackBar.open('Выберите дату расхода!', 'OK', { duration: 3000 });
+      return;
+    }
+
+    cost.date = costDate.getFullYear() === 1 ? costControlDate.toISOString().substring(0, 10) : cost.date;
+
+    const editCostDialog = this.dialogRef.open(NewCostComponent, { width: '500px', height: '550px', data: cost });
+    editCostDialog.afterClosed().subscribe(editedCost => {
+      if (!editedCost) {
+        return;
+      }
+
+      this.costs[this.costs.findIndex(c => c.id === editedCost.id)] = editedCost;
+      this.dataSource.data = this.costs;
+
+      this.resetFilter();
+    }, error => this.logger.logError(error));
+  }
+
+  editOrAddCost(cost: Cost) {
+    if (cost && cost.id > 0) {
+      this.editCost(cost);
+    }
+
+    if (cost && cost.id <= 0) {
+      this.addCost(cost);
+    }
+  } 
+
   deleteCost(cost: Cost) {
     if (!cost || cost.id <= 0) {
-      this.snackBar.open('Нельзя удалять несуществующий расход!', 'OK', { duration: 3000, verticalPosition: 'top', horizontalPosition: 'center' });
       return;
     }
     const confirmationDialog = this.dialogRef.open(ConfirmationComponent,

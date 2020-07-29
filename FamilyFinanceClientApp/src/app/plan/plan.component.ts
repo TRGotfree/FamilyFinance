@@ -34,7 +34,7 @@ export class PlanComponent implements OnInit {
   plans: Plan[];
   visibleGridColumns: string[];
   gridColumns: TableColumnAttribute[];
-  requiredColumnNames = ['editColumn', 'deleteColumn'];
+  requiredColumnNames = ['editColumn'];
   isLoading = true;
 
   ngOnInit(): void {
