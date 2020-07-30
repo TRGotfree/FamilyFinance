@@ -88,7 +88,7 @@ namespace FamilyFinace.Controllers
                 if (addedCost == null)
                     return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 
-                return StatusCode((int)HttpStatusCode.Created, addedCost);
+                return StatusCode((int)HttpStatusCode.Created, modelTransformer.FromModelsCostToDTOModelCost(addedCost));
             }
             catch (Exception ex)
             {
@@ -111,7 +111,7 @@ namespace FamilyFinace.Controllers
                 if (updatedCost == null)
                     return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 
-                return StatusCode((int)HttpStatusCode.Created, updatedCost);
+                return StatusCode((int)HttpStatusCode.Created, modelTransformer.FromModelsCostToDTOModelCost(updatedCost));
             }
             catch (Exception ex)
             {

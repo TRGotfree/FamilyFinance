@@ -86,6 +86,8 @@ export class CostsComponent implements OnInit, AfterViewInit {
   }
 
   addCost(cost: Cost) {
+
+    const newCostData = {} as Cost;
     const costDate = new Date(cost.date);
     const costControlDate = this.costsDateControl.value as Date;
 
@@ -94,16 +96,21 @@ export class CostsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    cost.date = costDate.getFullYear() === 1 ? costControlDate.toISOString().substring(0, 10) : cost.date;
+    newCostData.date = costDate.getFullYear() === 1 ? costControlDate.toISOString().substring(0, 10) : cost.date;
+    newCostData.categoryId = cost.categoryId;
+    newCostData.category = cost.category;
+    newCostData.costSubCategory = cost.costSubCategory;
+    newCostData.id = 0;
 
-    const newCostDialog = this.dialogRef.open(NewCostComponent, { width: '500px', height: '550px', data: cost });
-    newCostDialog.afterClosed().subscribe(newCost => {
-      if (!newCost) {
+    const newCostDialog = this.dialogRef.open(NewCostComponent, { width: '500px', height: '550px', data: newCostData });
+    newCostDialog.afterClosed().subscribe(newCostData => {
+      if (!newCostData) {
+        console.log('ВОЗВРАТ')
         return;
       }
 
-      this.costs.push(newCost);
-      this.dataSource.data = this.costs;
+      this.costs.push(newCostData);
+      this.dataSource = new MatTableDataSource(this.costs.sort((a, b) => a.amount - b.amount));
 
       this.resetFilter();
     }, error => this.logger.logError(error));
@@ -132,7 +139,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       }
 
       this.costs[this.costs.findIndex(c => c.id === editedCost.id)] = editedCost;
-      this.dataSource.data = this.costs;
+      this.dataSource.data = this.costs.sort((a,b)=> a.amount - b.amount);
 
       this.resetFilter();
     }, error => this.logger.logError(error));
@@ -161,6 +168,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       this.costsService.deleteCost(cost).subscribe(() => {
         cost.id = 0;
         cost.amount = 0;
+        cost.amountToDisplay = '0';
         cost.comment = '';
         cost.count = '';
         cost.store = '';
@@ -168,13 +176,14 @@ export class CostsComponent implements OnInit, AfterViewInit {
         cost.payType = '';
         cost.payTypeId = 0;
         cost.date = new Date(1, 1, 1).toString();
+                
       });
     });
   }
 
   getTotalCosts() {
     let total = 0;
-    this.costs.map(v => total += v.amount)
+    this.costs.map(v => total += v.amount);
 
     return total;
   }
