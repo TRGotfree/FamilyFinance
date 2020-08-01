@@ -6,7 +6,7 @@
                     <mat-card-title>Доход и остаток средств</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    {{profitAmount}}
+                    {{profitAmount | currency}}
                 </mat-card-content>
             </mat-card>
             <mat-card id="card-plan">
@@ -14,7 +14,7 @@
                     <mat-card-title>План</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    {{planAmount}}
+                    {{planAmount | currency}}
                 </mat-card-content>
             </mat-card>
             <mat-card id="card-costs">
@@ -22,7 +22,7 @@
                     <mat-card-title>Расход</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    {{costsAmount}}
+                    {{costsAmount | currency}}
                 </mat-card-content>
             </mat-card>
             <mat-card class="card-different" [ngClass]="{'card-minus-different': !(different >= 0)}">
@@ -30,7 +30,7 @@
                     <mat-card-title>Разница</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    {{different}}
+                    {{different | currency}}
                 </mat-card-content>
             </mat-card>
         </div>

@@ -38,7 +38,7 @@ export class StatisticsComponent implements OnInit {
         const currentDate = new Date();
         this.month = this.months[currentDate.getMonth()];
         this.year = currentDate.getFullYear();
-        this.statisticsService.getStatistics(currentDate.getMonth(), this.year).subscribe(stat => {
+        this.statisticsService.getStatistics(currentDate.getMonth() + 1, this.year).subscribe(stat => {
             if (!stat) {
                 this.snackBar.open('Не удалось загрузить статистические данные!', 'OK', { duration: 3000 });
                 return;

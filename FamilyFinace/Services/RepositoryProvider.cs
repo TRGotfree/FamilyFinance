@@ -70,10 +70,11 @@ namespace FamilyFinace.Services
             if (plan == null)
                 throw new ArgumentNullException(nameof(plan));
 
-            await repository.AddAsync(plan);
+            repository.Plan.Add(plan);
+
             await repository.SaveChangesAsync();
 
-            return plan;
+            return await repository.Plan.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == plan.Id);
         }
 
         public async Task<Store> AddStore(Store store)
@@ -187,7 +188,10 @@ namespace FamilyFinace.Services
         {
             var costCategories = repository.CostCategory.Where(c => !c.IsRemoved);
             var costPlans = repository.Plan.Include(p => p.Category).Where(p => p.Month == month && p.Year == year);
-            var maxCosts = repository.Cost.GroupBy(c => c.CostCategoryId ).Select(cc => new Cost { Amount = cc.Max(c => c.Amount), CostCategoryId = cc.Key });
+            var maxCosts = repository.Cost.GroupBy(c => new { c.CostCategoryId, c.Date.Month })
+                                          .Select(cc => new Cost { Amount = cc.Sum(c => c.Amount), CostCategoryId = cc.Key.CostCategoryId })
+                                          .GroupBy(cc => cc.CostCategoryId)
+                                          .Select(cc => new Cost { Amount = cc.Max(c => c.Amount), CostCategoryId = cc.Key });
 
             var plansQuery = from categorie in costCategories
                              join p in costPlans on categorie.Id equals p.CategoryId into pl

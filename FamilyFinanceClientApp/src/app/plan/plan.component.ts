@@ -124,7 +124,7 @@ export class PlanComponent implements OnInit {
           }
 
           this.plans[this.plans.findIndex(p => p.id === updatedPlan.id)] = updatedPlan;
-          this.dataSource = new MatTableDataSource(this.plans);
+          this.dataSource.data = this.plans;
 
         }, error => {
           this.logger.logError(error);
@@ -136,9 +136,10 @@ export class PlanComponent implements OnInit {
             this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
           }
 
-          this.plans.push(newPlan);
-          this.dataSource = new MatTableDataSource(this.plans);
+          newPlan.maxFactAmount = editedPlan.maxFactAmount;
 
+          this.plans[this.plans.findIndex(p => p.categoryId === newPlan.categoryId)] = newPlan;
+          this.dataSource.data = this.plans;
         }, error => {
           this.logger.logError(error);
           this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
@@ -160,8 +161,13 @@ export class PlanComponent implements OnInit {
         return;
       }
       this.planService.deletePlan(plan.id).subscribe(() => {
+        plan.id = 0; 
+        plan.amount = 0;
+        plan.amountToDisplay = "0";
+
+        this.plans[this.plans.findIndex(p => p.id === plan.id)] = plan;
         this.plans = this.plans.filter(p => p.id !== plan.id);
-        this.dataSource = new MatTableDataSource(this.plans);
+        this.dataSource.data = this.plans;
       });
     });
   }
