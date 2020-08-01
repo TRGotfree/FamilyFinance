@@ -27,7 +27,7 @@ namespace FamilyFinace.Services
             if (cost == null)
                 throw new ArgumentNullException(nameof(cost));
 
-            await repository.AddAsync(cost);
+            repository.Add(cost);
             await repository.SaveChangesAsync();
 
             return cost;
@@ -38,7 +38,7 @@ namespace FamilyFinace.Services
             if (costCategory == null)
                 throw new ArgumentNullException(nameof(costCategory));
 
-            await repository.AddAsync(costCategory);
+            repository.Add(costCategory);
             await repository.SaveChangesAsync();
 
             return costCategory;
@@ -48,7 +48,7 @@ namespace FamilyFinace.Services
             if (income == null)
                 throw new ArgumentNullException(nameof(income));
 
-            await repository.AddAsync(income);
+            repository.Add(income);
             await repository.SaveChangesAsync();
             
             return income;
@@ -59,7 +59,7 @@ namespace FamilyFinace.Services
             if (payType == null)
                 throw new ArgumentNullException(nameof(payType));
 
-            await repository.AddAsync(payType);
+            repository.Add(payType);
             await repository.SaveChangesAsync();
 
             return payType;
@@ -82,7 +82,7 @@ namespace FamilyFinace.Services
             if (store == null)
                 throw new ArgumentNullException(nameof(store));
 
-            await repository.AddAsync(store);
+            repository.Add(store);
             await repository.SaveChangesAsync();
 
             return store;
