@@ -1,25 +1,24 @@
 <app-toolbar>
-  <div id="actions-container">
-    <div>
-      <mat-form-field appearance="outline" id="search-field">
-        <mat-label>
-          Поиск по категориям
-        </mat-label>
-        <input type="text" (keyup)="searchData($event)" matInput placeholder="Введите название"
-          [formControl]="searchValueControl">
-        <mat-icon *ngIf="!searchValueControl.value" matSuffix>search</mat-icon>
-        <button mat-button type="reset" *ngIf="searchValueControl.value" matSuffix mat-icon-button aria-label="Очистить"
-          (click)="resetFilter()">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field id="date-picker" appearance="outline" (click)="costsDate.open()">
-        <input matInput [matDatepicker]="costsDate" [formControl]="costsDateControl">
-        <mat-datepicker-toggle matSuffix [for]="costsDate"></mat-datepicker-toggle>
-        <mat-datepicker #costsDate></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <button type="button" mat-raised-button color="accent" (click)="addCostCategory()">Добавить категорию расходов</button>
+  <div class="container-actions">
+    <mat-form-field appearance="outline" id="search-field">
+      <mat-label>
+        Поиск по категориям
+      </mat-label>
+      <input type="text" (keyup)="searchData($event)" matInput placeholder="Введите название"
+        [formControl]="searchValueControl">
+      <mat-icon *ngIf="!searchValueControl.value" matSuffix>search</mat-icon>
+      <button mat-button type="reset" *ngIf="searchValueControl.value" matSuffix mat-icon-button aria-label="Очистить"
+        (click)="resetFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field id="date-picker" appearance="outline" (click)="costsDate.open()">
+      <input matInput [matDatepicker]="costsDate" [formControl]="costsDateControl">
+      <mat-datepicker-toggle matSuffix [for]="costsDate"></mat-datepicker-toggle>
+      <mat-datepicker #costsDate></mat-datepicker>
+    </mat-form-field>
+
+    <button type="button" mat-raised-button color="accent" (click)="addCostCategory()">Добавить категорию</button>
   </div>
   <mat-spinner *ngIf="isLoading" color="accent">
   </mat-spinner>

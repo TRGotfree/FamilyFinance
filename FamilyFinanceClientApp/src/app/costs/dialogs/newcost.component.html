@@ -31,11 +31,11 @@
           </mat-autocomplete>
           <mat-error *ngIf="storeControl.hasError('required')">Выберите магазин!</mat-error>
         </mat-form-field>
-        <button type="button" *ngIf="!isPanelWithNewStoreOpened" mat-icon-button id="btn-add-store"
+        <button type="button" *ngIf="!isPanelWithNewStoreOpened" mat-stroked-button class="btn-action"
           (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
           <mat-icon>add</mat-icon>
         </button>
-        <button type="button" *ngIf="isPanelWithNewStoreOpened" mat-icon-button id="btn-close-store"
+        <button type="button" *ngIf="isPanelWithNewStoreOpened" mat-stroked-button class="btn-action"
           (click)="isPanelWithNewStoreOpened=!isPanelWithNewStoreOpened">
           <mat-icon>close</mat-icon>
         </button>
@@ -50,9 +50,8 @@
           </button>
           <mat-error *ngIf="storeNameControl.hasError('required')">Введите название магазина!</mat-error>
         </mat-form-field>
-        <button type="button" [disabled]="storeNameControl.invalid" mat-raised-button color="accent"
-          (click)="addNewStore()">Добавить</button>
-          <mat-divider></mat-divider>
+        <button type="button" class="btn-action" [disabled]="storeNameControl.invalid" mat-stroked-button color="accent"
+          (click)="addNewStore()"><mat-icon>done_outline</mat-icon></button>
       </div>
       <mat-form-field id="textarea-field">
         <mat-label>Комментарий</mat-label>

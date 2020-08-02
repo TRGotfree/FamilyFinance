@@ -11,6 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { NewCostComponent } from './dialogs/newCost.component';
+import { EditCategoryComponent } from '../dictionaries/category/dialogs/edit.category.component';
+import { Category } from '../dictionaries/category/category.model';
 
 @Component({
   templateUrl: './costs.component.html',
@@ -139,7 +141,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       }
 
       this.costs[this.costs.findIndex(c => c.id === editedCost.id)] = editedCost;
-      this.dataSource.data = this.costs.sort((a,b)=> a.amount - b.amount);
+      this.dataSource.data = this.costs.sort((a, b) => a.amount - b.amount);
 
       this.resetFilter();
     }, error => this.logger.logError(error));
@@ -153,7 +155,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
     if (cost && cost.id <= 0) {
       this.addCost(cost);
     }
-  } 
+  }
 
   deleteCost(cost: Cost) {
     if (!cost || cost.id <= 0) {
@@ -176,7 +178,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
         cost.payType = '';
         cost.payTypeId = 0;
         cost.date = new Date(1, 1, 1).toString();
-                
+
       });
     });
   }
@@ -189,7 +191,20 @@ export class CostsComponent implements OnInit, AfterViewInit {
   }
 
   addCostCategory() {
-    
+    const addNewCategoryDialog = this.dialogRef.open(EditCategoryComponent, {
+      width: '520px', height: '400px',
+      data: { id: 0, categoryName: '', subCategoryName: '', isRemoved: false } as Category
+    });
+
+    addNewCategoryDialog.afterClosed().subscribe(addedCategory => {
+      if (!addedCategory) {
+        return;
+      }
+
+      const date = this.costsDateControl.value.format('YYYY-MM-DD HH:mm:ss');
+      this.loadCostsOnDate(new Date(date));
+
+    });
   }
 
 }

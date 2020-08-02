@@ -6,6 +6,12 @@
   width: 100%;
 }
 
+#caption {
+  width: 100%;
+  color: #673ab7;
+  text-align: center;
+}
+
 mat-dialog-actions {
   display: flex;
   flex-direction: row;
@@ -27,12 +33,14 @@ mat-form-field {
   width: 100%;
 }
 
-#btn-add-store {
-  color: #673ab7;
+.field-container > mat-form-field {
+  width: 83%;
 }
 
-#btn-close-store {
+.btn-action {
+  width: 7%;
   color: #673ab7;
+  margin-top: 10px;
 }
 
 #expandedPanel {
@@ -44,8 +52,5 @@ mat-form-field {
   height: 50px;
 }
 #expandedPanel mat-form-field {
-  width: 65%;
-}
-#expandedPanel button {
-  width: 30%;
+  width: 83%;
 }

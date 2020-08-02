@@ -12,17 +12,21 @@
                         {{category.categoryName}}</mat-option>
                 </mat-autocomplete>
                 <mat-error *ngIf="categoryControl.hasError('required')">Выберите категорию!</mat-error>
+                <mat-error *ngIf="categoryControl.hasError('maxLength')">Количество символов в категории не может
+                    превышать 500 символов!</mat-error>
+                <mat-error *ngIf="categoryNameControl.hasError('minLength')">Количество символов в названии категории не
+                    может быть меньше 3 символов!</mat-error>
             </mat-form-field>
-            <button type="button" *ngIf="!isPanelWithNewCategoryOpened" mat-icon-button id="btn-add-category"
-                (click)="isPanelWithNewCategoryOpened=!isPanelWithNewCategoryOpened">
+            <button type="button" *ngIf="!isPanelWithNewCategoryOpened" mat-stroked-button class="btn-action"
+                (click)="isPanelWithNewCategoryOpened=!isPanelWithNewCategoryOpened" color="primary">
                 <mat-icon>add</mat-icon>
             </button>
-            <button type="button" *ngIf="isPanelWithNewCategoryOpened" mat-icon-button id="btn-close-category"
-                (click)="isPanelWithNewCategoryOpened=!isPanelWithNewCategoryOpened">
+            <button type="button" *ngIf="isPanelWithNewCategoryOpened" mat-stroked-button class="btn-action"
+                (click)="isPanelWithNewCategoryOpened=!isPanelWithNewCategoryOpened" color="primary">
                 <mat-icon>close</mat-icon>
             </button>
         </div>
-        <div id="expandedPanel" *ngIf="isPanelWithNewCategoryOpened">
+        <div class="container-expanded-panel" *ngIf="isPanelWithNewCategoryOpened">
             <mat-form-field>
                 <mat-label>Название категории</mat-label>
                 <input type="text" matInput name="categoryName" [formControl]="categoryNameControl"
@@ -32,12 +36,17 @@
                     <mat-icon>close</mat-icon>
                 </button>
                 <mat-error *ngIf="categoryNameControl.hasError('required')">Введите название категории!</mat-error>
+                <mat-error *ngIf="categoryNameControl.hasError('maxLength')">Количество символов в названии категории не
+                    может превышать 500 символов!</mat-error>
+                <mat-error *ngIf="categoryNameControl.hasError('minLength')">Количество символов в названии категории не
+                    может быть меньше 3 символов!</mat-error>
             </mat-form-field>
-            <button type="button" [disabled]="categoryNameControl.invalid" mat-raised-button color="accent"
-                (click)="addNewCategory()">Добавить</button>
-            <mat-divider></mat-divider>
+            <button class="btn-action" type="button" [disabled]="categoryNameControl.invalid" mat-stroked-button color="primary"
+                (click)="addNewCategory()">
+                <mat-icon>done_outline</mat-icon>
+            </button>
         </div>
-        <mat-form-field>
+        <mat-form-field id="field-subcategory">
             <mat-label>Название подкатегории</mat-label>
             <input type="text" matInput name="subCategoryName" [formControl]="subCategoryNameControl"
                 placeholder="Введите название">
@@ -46,6 +55,10 @@
                 <mat-icon>close</mat-icon>
             </button>
             <mat-error *ngIf="subCategoryNameControl.hasError('required')">Введите название подкатегории!</mat-error>
+            <mat-error *ngIf="subCategoryNameControl.hasError('maxLength')">Количество символов в названии подкатегории
+                не может превышать 500 символов!</mat-error>
+            <mat-error *ngIf="subCategoryNameControl.hasError('minLength')">Количество символов в названии подкатегории
+                не может быть меньше 3 символов!</mat-error>
         </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
