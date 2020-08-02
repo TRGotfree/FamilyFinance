@@ -1,27 +1,30 @@
 <app-toolbar>
   <div id="actions-container">
-    <mat-form-field appearance="outline" id="search-field">
-      <mat-label>
-        Поиск по категориям
-      </mat-label>
-      <input type="text" (keyup)="searchData($event)" matInput placeholder="Введите название"
-        [formControl]="searchValueControl">
-      <mat-icon *ngIf="!searchValueControl.value" matSuffix>search</mat-icon>
-      <button mat-button type="reset" *ngIf="searchValueControl.value" matSuffix mat-icon-button aria-label="Очистить"
-        (click)="resetFilter()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <mat-form-field id="date-picker" appearance="outline" (click)="costsDate.open()">
-      <input matInput [matDatepicker]="costsDate" [formControl]="costsDateControl">
-      <mat-datepicker-toggle matSuffix [for]="costsDate"></mat-datepicker-toggle>
-      <mat-datepicker #costsDate></mat-datepicker>
-    </mat-form-field>
+    <div>
+      <mat-form-field appearance="outline" id="search-field">
+        <mat-label>
+          Поиск по категориям
+        </mat-label>
+        <input type="text" (keyup)="searchData($event)" matInput placeholder="Введите название"
+          [formControl]="searchValueControl">
+        <mat-icon *ngIf="!searchValueControl.value" matSuffix>search</mat-icon>
+        <button mat-button type="reset" *ngIf="searchValueControl.value" matSuffix mat-icon-button aria-label="Очистить"
+          (click)="resetFilter()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field id="date-picker" appearance="outline" (click)="costsDate.open()">
+        <input matInput [matDatepicker]="costsDate" [formControl]="costsDateControl">
+        <mat-datepicker-toggle matSuffix [for]="costsDate"></mat-datepicker-toggle>
+        <mat-datepicker #costsDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <button type="button" mat-raised-button color="accent" (click)="addCostCategory()">Добавить категорию расходов</button>
   </div>
   <mat-spinner *ngIf="isLoading" color="accent">
   </mat-spinner>
-  <mat-table *ngIf="!isLoading && costs && costs.length > 0" [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows
-    id="costs-table">
+  <mat-table *ngIf="!isLoading && costs && costs.length > 0" [dataSource]="dataSource" class="mat-elevation-z8" matSort
+    multiTemplateDataRows id="costs-table">
     <ng-container *ngFor="let gridColumn of gridColumns; let i = index" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
       <mat-cell *matCellDef="let cost">{{cost[gridColumn.propertyName]}}</mat-cell>

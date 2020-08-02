@@ -9,7 +9,7 @@ namespace FamilyFinace.Models
     public class CostCategory
     {
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(0, int.MaxValue)]
         public int Id { get; set; }
 
         [Required]

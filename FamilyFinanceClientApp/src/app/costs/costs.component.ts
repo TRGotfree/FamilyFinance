@@ -188,4 +188,8 @@ export class CostsComponent implements OnInit, AfterViewInit {
     return total;
   }
 
+  addCostCategory() {
+    
+  }
+
 }

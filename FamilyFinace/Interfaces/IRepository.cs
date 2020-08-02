@@ -17,15 +17,15 @@ namespace FamilyFinace.Interfaces
         
         Task DeleteCost(int costId);
 
-        Task<IEnumerable<CostCategory>> GetCostCategories();
+        Task<List<CostCategory>> GetCostCategories();
 
         Task<CostCategory> AddCostCategory(CostCategory costCategory);
 
         Task<CostCategory> UpdateCostCategory(CostCategory costCategory);
 
-        Task DeleteCostCategory(CostCategory costCategory);
+        Task DeleteCostCategory(int costCategoryId);
 
-        Task<IEnumerable<Store>> GetStores();
+        Task<List<Store>> GetStores();
 
         Task<Store> AddStore(Store store);
 
@@ -33,7 +33,7 @@ namespace FamilyFinace.Interfaces
 
         Task DeleteStore(int storeId);
 
-        Task<IEnumerable<PayType>> GetPayTypes();
+        Task<List<PayType>> GetPayTypes();
 
         Task<PayType> AddPayType(PayType payType);
 
@@ -50,8 +50,6 @@ namespace FamilyFinace.Interfaces
         Task DeleteIncome(int incomeId);
 
         Task<Plan> AddPlan(Plan plan);
-
-        Task<IEnumerable<Plan>> GetPlans(int month, int year);
 
         Task<Plan> UpdatePlan(Plan plan);
 

@@ -98,12 +98,13 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteCostCategory(CostCategory costCategory)
+        public async Task DeleteCostCategory(int costCategoryId)
         {
-            if (costCategory == null)
-                throw new ArgumentNullException(nameof(costCategory));
+            var categoryToRemove = await repository.CostCategory.FindAsync(costCategoryId);
+            if (categoryToRemove == null)
+                return;
 
-            repository.Remove(costCategory);
+            repository.Remove(categoryToRemove);
             await repository.SaveChangesAsync();
         }
 
@@ -151,9 +152,9 @@ namespace FamilyFinace.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CostCategory>> GetCostCategories()
+        public Task<List<CostCategory>> GetCostCategories()
         {
-            return await repository.CostCategory.Where(c => !c.IsRemoved).ToListAsync();
+            return repository.CostCategory.Where(c => !c.IsRemoved).ToListAsync();
         }
 
         public Task<List<Cost>> GetCosts(DateTime date)
@@ -164,7 +165,7 @@ namespace FamilyFinace.Services
                 .Include(c => c.CostCategory).Where(c => c.Date == date);
 
             var resultQuery = from costCategorie in costsCategoriesQuery
-                              join cd in costsOnCertainDateQuery.DefaultIfEmpty() on costCategorie.Id equals cd.CostCategoryId into c
+                              join cd in costsOnCertainDateQuery on costCategorie.Id equals cd.CostCategoryId into c
                               from cost in c.DefaultIfEmpty()
                               select new Cost
                               {
@@ -207,34 +208,12 @@ namespace FamilyFinace.Services
             return repository.Income.Include(i => i.PayType).Where(i => i.Date >= beginDate && i.Date <= endDate).ToListAsync();
         }
 
-        public async Task<IEnumerable<PayType>> GetPayTypes()
+        public async Task<List<PayType>> GetPayTypes()
         {
             return await repository.PayType.Where(pt => !pt.IsRemoved).ToListAsync();
         }
 
-        public async Task<IEnumerable<Plan>> GetPlans(int month, int year)
-        {
-            var costsCategories = await repository.CostCategory.ToListAsync();
-            var plans = await repository.Plan.Include(c => c.Category).Where(p => p.Month == month && p.Year == year).ToListAsync();
-
-            var notExistingCostCategories = costsCategories.Where(c => !plans.Select(p => p.CategoryId).Contains(c.Id)).ToList();
-
-            for (int i = 0; i < notExistingCostCategories.Count; i++)
-            {
-                plans.Add(new Plan
-                {
-                    CategoryId = notExistingCostCategories[i].Id,
-                    Category = notExistingCostCategories[i],
-                    Month = month,
-                    Year = year,
-                    Amount = 0
-                });
-            }
-
-            return plans.OrderBy(cc => cc.Category.CategoryName);
-        }
-
-        public async Task<IEnumerable<Store>> GetStores()
+        public async Task<List<Store>> GetStores()
         {
             return await repository.Store.Where(s => !s.IsRemoved).ToListAsync();
         }

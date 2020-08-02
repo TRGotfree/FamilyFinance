@@ -1,0 +1,56 @@
+<form [formGroup]="categoryFormGroup" (ngSubmit)="save()">
+    <mat-dialog-content>
+        <h3 id="caption">{{caption}}</h3>
+        <div class="field-container">
+            <mat-form-field>
+                <mat-label>Категория</mat-label>
+                <input type="text" name="category" matInput [formControl]="categoryControl"
+                    [matAutocomplete]="categoryAutoComplete" [(value)]="category.categoryName" required
+                    placeholder="Выберите категорию">
+                <mat-autocomplete #categoryAutoComplete="matAutocomplete">
+                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category.categoryName">
+                        {{category.categoryName}}</mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="categoryControl.hasError('required')">Выберите категорию!</mat-error>
+            </mat-form-field>
+            <button type="button" *ngIf="!isPanelWithNewCategoryOpened" mat-icon-button id="btn-add-category"
+                (click)="isPanelWithNewCategoryOpened=!isPanelWithNewCategoryOpened">
+                <mat-icon>add</mat-icon>
+            </button>
+            <button type="button" *ngIf="isPanelWithNewCategoryOpened" mat-icon-button id="btn-close-category"
+                (click)="isPanelWithNewCategoryOpened=!isPanelWithNewCategoryOpened">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div id="expandedPanel" *ngIf="isPanelWithNewCategoryOpened">
+            <mat-form-field>
+                <mat-label>Название категории</mat-label>
+                <input type="text" matInput name="categoryName" [formControl]="categoryNameControl"
+                    placeholder="Введите название">
+                <button mat-button type="reset" *ngIf="categoryNameControl.value" matSuffix mat-icon-button
+                    aria-label="Очистить" (click)="categoryNameControl.setValue('')">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="categoryNameControl.hasError('required')">Введите название категории!</mat-error>
+            </mat-form-field>
+            <button type="button" [disabled]="categoryNameControl.invalid" mat-raised-button color="accent"
+                (click)="addNewCategory()">Добавить</button>
+            <mat-divider></mat-divider>
+        </div>
+        <mat-form-field>
+            <mat-label>Название подкатегории</mat-label>
+            <input type="text" matInput name="subCategoryName" [formControl]="subCategoryNameControl"
+                placeholder="Введите название">
+            <button mat-button type="reset" *ngIf="subCategoryNameControl.value" matSuffix mat-icon-button
+                aria-label="Очистить" (click)="subCategoryNameControl.setValue('')">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="subCategoryNameControl.hasError('required')">Введите название подкатегории!</mat-error>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button [disabled]="categoryFormGroup.invalid" type="submit" id="btn-save" mat-raised-button
+            color="primary">Сохранить</button>
+        <button id="btn-cancel" type="button" mat-raised-button color="warn" (click)="cancel()">Отмена</button>
+    </mat-dialog-actions>
+</form>
