@@ -30,7 +30,11 @@ namespace FamilyFinace.Services
             repository.Add(cost);
             await repository.SaveChangesAsync();
 
-            return cost;
+            return await repository.Cost
+                .Include(c => c.CostCategory)
+                .Include(c => c.PayType)
+                .Include(c => c.Store)
+                .FirstOrDefaultAsync(c => c.Id == cost.Id);
         }
 
         public async Task<CostCategory> AddCostCategory(CostCategory costCategory)
@@ -50,7 +54,7 @@ namespace FamilyFinace.Services
 
             repository.Add(income);
             await repository.SaveChangesAsync();
-            
+
             return income;
         }
 

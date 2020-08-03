@@ -13,6 +13,8 @@ import { FormControl } from '@angular/forms';
 import { NewCostComponent } from './dialogs/newCost.component';
 import { EditCategoryComponent } from '../dictionaries/category/dialogs/edit.category.component';
 import { Category } from '../dictionaries/category/category.model';
+import { DateTimeBuilder } from '../shared/services/dateTimeBuilder.service';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: './costs.component.html',
@@ -23,11 +25,11 @@ export class CostsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private costsService: CostsService, private logger: CustomLogger,
-    private snackBar: MatSnackBar, private dialogRef: MatDialog) {
+    private snackBar: MatSnackBar, private dialogRef: MatDialog, private dateTimeBuilder: DateTimeBuilder) {
   }
 
   isLoading = true;
-  costsDateControl = new FormControl(new Date());
+  costsDateControl = new FormControl(moment());
   dataSource = new MatTableDataSource([]);
   selectedDate: Date;
   costs: Cost[];
@@ -90,15 +92,14 @@ export class CostsComponent implements OnInit, AfterViewInit {
   addCost(cost: Cost) {
 
     const newCostData = {} as Cost;
-    const costDate = new Date(cost.date);
-    const costControlDate = this.costsDateControl.value as Date;
+    const costControlDate = this.costsDateControl.value?.toDate() as Date;
 
-    if (costDate.getFullYear() === 1 && !costControlDate) {
+    if (!costControlDate) {
       this.snackBar.open('Выберите дату расхода!', 'OK', { duration: 3000 });
       return;
     }
 
-    newCostData.date = costDate.getFullYear() === 1 ? costControlDate.toISOString().substring(0, 10) : cost.date;
+    newCostData.date = costControlDate.toLocaleString().substring(0, 10);
     newCostData.categoryId = cost.categoryId;
     newCostData.category = cost.category;
     newCostData.costSubCategory = cost.costSubCategory;
@@ -107,12 +108,11 @@ export class CostsComponent implements OnInit, AfterViewInit {
     const newCostDialog = this.dialogRef.open(NewCostComponent, { width: '500px', height: '550px', data: newCostData });
     newCostDialog.afterClosed().subscribe(newCostData => {
       if (!newCostData) {
-        console.log('ВОЗВРАТ')
         return;
       }
 
-      this.costs.push(newCostData);
-      this.dataSource = new MatTableDataSource(this.costs.sort((a, b) => a.amount - b.amount));
+      this.costs.unshift(newCostData);
+      this.dataSource = new MatTableDataSource(this.costs.sort((a, b) => b.amount - a.amount));
 
       this.resetFilter();
     }, error => this.logger.logError(error));
