@@ -76,8 +76,6 @@ export class NewCostComponent implements OnInit {
     this.cost.store = this.storeControl.value;
     this.cost.comment = this.commentControl.value;
 
-    console.log(JSON.stringify(this.cost));
-
     if (this.cost && this.cost.id > 0) {
       this.costsService.updateCost(this.cost).subscribe(updatedCost => {
         if (!updatedCost) {

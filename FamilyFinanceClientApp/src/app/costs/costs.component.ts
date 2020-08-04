@@ -99,7 +99,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    newCostData.date = costControlDate.toLocaleString().substring(0, 10);
+    newCostData.date = this.dateTimeBuilder.getFormattedDate(costControlDate, "-");
     newCostData.categoryId = cost.categoryId;
     newCostData.category = cost.category;
     newCostData.costSubCategory = cost.costSubCategory;
