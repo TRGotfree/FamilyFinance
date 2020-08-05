@@ -30,7 +30,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
 
   isLoading = true;
   costsDateControl = new FormControl(moment());
-  dataSource = new MatTableDataSource([]);
+  dataSource: MatTableDataSource<Cost>;
   selectedDate: Date;
   costs: Cost[];
   visibleGridColumns: string[];
@@ -39,6 +39,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   requiredColumnNames = ['editColumn'];
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<Cost>();
     this.isLoading = true;
     this.costsService.getCostsMeta().subscribe(data => {
       this.gridColumns = data;
@@ -67,7 +68,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
     this.costsService.getCosts(date)
       .subscribe(data => {
         this.costs = data;
-        this.dataSource = new MatTableDataSource(this.costs);
+        this.dataSource = new MatTableDataSource<Cost>(this.costs);
         this.dataSource.sort = this.sort;
       }, error => {
         this.logger.logError(error);
@@ -112,9 +113,9 @@ export class CostsComponent implements OnInit, AfterViewInit {
       }
 
       this.costs.unshift(newCostData);
-      this.dataSource = new MatTableDataSource(this.costs.sort((a, b) => b.amount - a.amount));
-
+      this.dataSource.data = this.costs.sort((a, b) => b.amount - a.amount);
       this.resetFilter();
+
     }, error => this.logger.logError(error));
   }
 
@@ -185,7 +186,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
 
   getTotalCosts() {
     let total = 0;
-    this.costs.map(v => total += v.amount);
+    this.costs?.map(v => total += v.amount);
 
     return total;
   }

@@ -22,7 +22,8 @@
   </div>
   <mat-spinner *ngIf="isLoading" color="accent">
   </mat-spinner>
-  <mat-table *ngIf="!isLoading && costs && costs.length > 0" [dataSource]="dataSource" class="mat-elevation-z8" matSort
+  <div [hidden]="isLoading || !costs">
+  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
     multiTemplateDataRows id="costs-table">
     <ng-container *ngFor="let gridColumn of gridColumns; let i = index" [matColumnDef]="gridColumn.propertyName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{gridColumn.displayName}}</mat-header-cell>
@@ -52,5 +53,9 @@
     <mat-header-row *matHeaderRowDef="visibleGridColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let cost; columns: visibleGridColumns;" (dblclick)="editOrAddCost(cost)"></mat-row>
     <mat-footer-row *matFooterRowDef="visibleGridColumns; sticky: true"></mat-footer-row>
+    <tr class="mat-row" id="no-data-row" *matNoDataRow>
+      <td class="mat-cell" id="no-data-cell" colspan="7">Данные не найдены!</td>
+    </tr>
   </mat-table>
+</div>
 </app-toolbar>

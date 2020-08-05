@@ -174,7 +174,7 @@ export class PlanComponent implements OnInit {
 
   getTotalPlans() {
     let total = 0;
-    this.plans.map(v => total += v.amount)
+    this.plans?.map(v => total += v.amount)
 
     return total;
   }

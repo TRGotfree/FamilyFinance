@@ -95,3 +95,15 @@ mat-footer-cell {
   font-weight: 500;
 }
 
+#no-data-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+#no-data-cell {
+  color: grey;
+  font-size: 14pt;
+}

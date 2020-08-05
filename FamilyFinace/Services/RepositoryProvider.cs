@@ -186,7 +186,7 @@ namespace FamilyFinace.Services
                                   Store = cost.Store
                               };
 
-            return resultQuery.OrderBy(cc => cc.CostCategory.CategoryName).ToListAsync();
+            return resultQuery.OrderByDescending(cc => cc.Amount).ToListAsync();
         }
 
         public Task<List<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year)
@@ -205,7 +205,7 @@ namespace FamilyFinace.Services
                              from cost in cc.DefaultIfEmpty()
                              select new Plan { Id = plan.Id, Amount = plan.Amount, Category = categorie, CategoryId = categorie.Id, Month = month, Year = year, MaxAmountOfCost = cost.Amount };
 
-            return plansQuery.OrderBy(p => p.Category.CategoryName).ToListAsync();
+            return plansQuery.OrderByDescending(p => p.Amount).ToListAsync();
         }
         public Task<List<Income>> GetIncomes(DateTime beginDate, DateTime endDate)
         {
