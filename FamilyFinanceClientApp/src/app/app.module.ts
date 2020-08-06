@@ -45,6 +45,7 @@ import { PlanComponent } from './plan/plan.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { IncomesComponent } from './incomes/incomes.component';
 import { EditCategoryComponent } from './dictionaries/category/dialogs/edit.category.component';
+import { DictionariesComponent } from './dictionaries/dictionaries.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { EditCategoryComponent } from './dictionaries/category/dialogs/edit.cate
     EditPlanComponent,
     StatisticsComponent,
     IncomesComponent,
-    EditCategoryComponent
+    EditCategoryComponent,
+    DictionariesComponent
   ],
   imports: [
     BrowserModule,

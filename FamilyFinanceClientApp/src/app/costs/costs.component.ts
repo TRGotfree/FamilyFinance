@@ -179,7 +179,6 @@ export class CostsComponent implements OnInit, AfterViewInit {
         cost.payType = '';
         cost.payTypeId = 0;
         cost.date = new Date(1, 1, 1).toString();
-
       });
     });
   }
@@ -193,7 +192,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
 
   addCostCategory() {
     const addNewCategoryDialog = this.dialogRef.open(EditCategoryComponent, {
-      width: '520px', height: '400px',
+      width: '520px', height: '300px',
       data: { id: 0, categoryName: '', subCategoryName: '', isRemoved: false } as Category
     });
 

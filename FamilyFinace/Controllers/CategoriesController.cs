@@ -52,7 +52,7 @@ namespace FamilyFinace.Controllers
         {
             try
             {
-                if (category != null || !ModelState.IsValid)
+                if (category == null || !ModelState.IsValid)
                     return BadRequest();
 
                 var newCategorie = await repository.AddCostCategory(category);

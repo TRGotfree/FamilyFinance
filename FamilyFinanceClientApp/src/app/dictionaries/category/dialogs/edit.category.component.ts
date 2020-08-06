@@ -21,8 +21,8 @@ export class EditCategoryComponent implements OnInit {
     categoryNameControl: FormControl;
     subCategoryNameControl: FormControl;
 
-    categories: Category[] = [];
-    filteredCategories: Observable<Category[]>;
+    categories: string[] = [];
+    filteredCategories: Observable<string[]>;
 
     constructor(public dialogRef: MatDialogRef<EditCategoryComponent>,
         @Inject(MAT_DIALOG_DATA) public category: Category,
@@ -53,12 +53,22 @@ export class EditCategoryComponent implements OnInit {
                 return;
             }
 
-            this.categories = categoriesData;
+            this.categories = Array.from(new Set(categoriesData.map(v => v.categoryName)));
+
             this.filteredCategories = this.categoryControl.valueChanges.pipe(startWith(''), map(searchedStoreName => {
                 const categoryName = searchedStoreName.toLowerCase();
-                return this.categories.filter(s => s.categoryName.toLowerCase().includes(categoryName));
+                return this.categories.filter(s => s.toLowerCase().includes(categoryName));
             }));
         });
+    }
+
+    openNewCategoryPanel() {
+        if (this.isPanelWithNewCategoryOpened) {
+            this.dialogRef.updateSize('520px', '300px');
+        }else{
+            this.dialogRef.updateSize('520px', '400px');
+        }
+        this.isPanelWithNewCategoryOpened = !this.isPanelWithNewCategoryOpened;
     }
 
     addNewCategory() {
@@ -72,7 +82,6 @@ export class EditCategoryComponent implements OnInit {
     }
 
     save() {
-
         if (this.categoryFormGroup.invalid) {
             return;
         }
@@ -80,6 +89,7 @@ export class EditCategoryComponent implements OnInit {
         if (this.category && this.category.id) {
             this.category.categoryName = this.categoryNameControl.value;
             this.category.subCategoryName = this.subCategoryNameControl.value;
+
             this.categoryService.editCategory(this.category).subscribe(editedCategory => {
                 if (!editedCategory) {
                     this.snackBar.open('Не удалось обновить категорию расходов!', 'OK', { duration: 3000 });
@@ -95,6 +105,7 @@ export class EditCategoryComponent implements OnInit {
             const category = new Category();
             category.categoryName = this.categoryNameControl.value;
             category.subCategoryName = this.subCategoryNameControl.value;
+
             this.categoryService.addCategory(category).subscribe(addedCategory => {
 
                 if (!addedCategory) {

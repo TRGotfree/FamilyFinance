@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "FamilyFinanceClientApp"
+  "defaultProject": "FamilyFinanceClientApp",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
