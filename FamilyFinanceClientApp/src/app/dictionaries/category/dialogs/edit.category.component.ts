@@ -34,16 +34,15 @@ export class EditCategoryComponent implements OnInit {
             this.caption = 'Редактирование категории';
         }
 
-        this.categoryControl = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]);
+        this.categoryControl = new FormControl(category?.categoryName, [Validators.required, Validators.minLength(3), Validators.maxLength(500)]);
         this.categoryNameControl = new FormControl('', [Validators.maxLength(500), Validators.minLength(3)]);
-        this.subCategoryNameControl = new FormControl('', [Validators.required, Validators.maxLength(500), Validators.minLength(3)]);
+        this.subCategoryNameControl = new FormControl(category?.subCategoryName, [Validators.required, Validators.maxLength(500), Validators.minLength(3)]);
 
         this.categoryFormGroup = new FormGroup({
             category: this.categoryControl,
             categoryName: this.categoryNameControl,
             subCategoryName: this.subCategoryNameControl
         });
-
     }
 
     ngOnInit() {
@@ -87,7 +86,7 @@ export class EditCategoryComponent implements OnInit {
         }
 
         if (this.category && this.category.id) {
-            this.category.categoryName = this.categoryNameControl.value;
+            this.category.categoryName = this.categoryControl.value;
             this.category.subCategoryName = this.subCategoryNameControl.value;
 
             this.categoryService.editCategory(this.category).subscribe(editedCategory => {
@@ -103,7 +102,7 @@ export class EditCategoryComponent implements OnInit {
             });
         } else {
             const category = new Category();
-            category.categoryName = this.categoryNameControl.value;
+            category.categoryName = this.categoryControl.value;
             category.subCategoryName = this.subCategoryNameControl.value;
 
             this.categoryService.addCategory(category).subscribe(addedCategory => {

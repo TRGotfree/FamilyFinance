@@ -5,11 +5,11 @@
             <mat-form-field>
                 <mat-label>Категория</mat-label>
                 <input type="text" name="category" matInput [formControl]="categoryControl"
-                    [matAutocomplete]="categoryAutoComplete" [(value)]="category" required
+                    [matAutocomplete]="categoryAutoComplete" required
                     placeholder="Выберите категорию">
                 <mat-autocomplete #categoryAutoComplete="matAutocomplete">
-                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
-                        {{category}}</mat-option>
+                    <mat-option *ngFor="let filteredCategory of filteredCategories | async" [value]="filteredCategory">
+                        {{filteredCategory}}</mat-option>
                 </mat-autocomplete>
                 <mat-error *ngIf="categoryControl.hasError('required')">Выберите категорию!</mat-error>
                 <mat-error *ngIf="categoryControl.hasError('maxLength')">Количество символов в категории не может
