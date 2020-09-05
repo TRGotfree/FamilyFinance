@@ -273,7 +273,7 @@ namespace FamilyFinace.Services
 
             repository.Update(plan);
             await repository.SaveChangesAsync();
-            return plan;
+            return await repository.Plan.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == plan.Id);
         }
 
         public async Task<Store> UpdateStore(Store store)

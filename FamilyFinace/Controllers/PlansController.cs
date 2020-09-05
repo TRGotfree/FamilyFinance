@@ -103,7 +103,10 @@ namespace FamilyFinace.Controllers
                 if (planModel == null)
                     return StatusCode((int)HttpStatusCode.InternalServerError, ServerMessages.INTERNAL_SERVER_ERROR);
 
-                return StatusCode((int)HttpStatusCode.Created, modelTransformer.FromModelPlanToDTOModelPlan(planModel));
+                var updatedPlan = modelTransformer.FromModelPlanToDTOModelPlan(planModel);
+                updatedPlan.MaxFactAmount = plan.MaxFactAmount;
+
+                return StatusCode((int)HttpStatusCode.Created, updatedPlan);
             }
             catch (Exception ex)
             {

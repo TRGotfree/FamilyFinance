@@ -41,7 +41,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Cost>();
     this.isLoading = true;
-    this.costsService.getCostsMeta().subscribe(data => {
+    this.costsService.getCostsMeta().subscribe((data: TableColumnAttribute[]) => {
       this.gridColumns = data;
       this.visibleGridColumns = data.map(d => d.propertyName);
       for (const requiredColumn of this.requiredColumnNames) {
@@ -66,7 +66,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
   loadCostsOnDate(date: Date) {
     this.isLoading = true;
     this.costsService.getCosts(date)
-      .subscribe(data => {
+      .subscribe((data: Cost[]) => {
         this.costs = data;
         this.dataSource = new MatTableDataSource<Cost>(this.costs);
         this.dataSource.sort = this.sort;
@@ -142,7 +142,7 @@ export class CostsComponent implements OnInit, AfterViewInit {
       }
 
       this.costs[this.costs.findIndex(c => c.id === editedCost.id)] = editedCost;
-      this.dataSource.data = this.costs.sort((a, b) => a.amount - b.amount);
+      this.dataSource.data = this.costs.sort((a, b) => b.amount - a.amount);
 
       this.resetFilter();
     }, error => this.logger.logError(error));

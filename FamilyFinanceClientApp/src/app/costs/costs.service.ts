@@ -6,42 +6,37 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Cost } from './cost.model';
 import { TableColumnAttribute } from '../shared/models/tableColumnAttribute';
-
+import { throwCustomError } from '../shared/services/server.error.catcher';
+import { ServerResponseError } from '../shared/models/server.response.error.model';
 @Injectable()
 export class CostsService {
 
   constructor(private httpClient: HttpClient, private logger: CustomLogger, private dateTimeBuilder: DateTimeBuilder) {
   }
 
-  getCosts(date: Date): Observable<Cost[]> {
+  getCosts(date: Date): Observable<Cost[] | ServerResponseError> {
     return this.httpClient.get<Cost[]>(`/api/costs/${this.dateTimeBuilder.getFormattedDate(date, '-')}`)
-      .pipe(catchError(this.errorHandler<Cost[]>('getCosts', [])));
+      .pipe(catchError(throwCustomError));
   }
 
-  getCostsMeta(): Observable<TableColumnAttribute[]> {
+  getCostsMeta(): Observable<TableColumnAttribute[] | ServerResponseError> {
     return this.httpClient.get<TableColumnAttribute[]>('/api/costs/meta')
-      .pipe(catchError(this.errorHandler<TableColumnAttribute[]>('getCostsMeta', [])));
+      .pipe(catchError(throwCustomError));
   }
 
-  addCost(cost: Cost): Observable<Cost> {
+  addCost(cost: Cost): Observable<Cost | ServerResponseError> {
     return this.httpClient.post<Cost>('/api/costs', cost)
-      .pipe(catchError(this.errorHandler<Cost>('addCost', null)));
+      .pipe(catchError(throwCustomError));
   }
 
-  updateCost(cost: Cost): Observable<Cost> {
+  updateCost(cost: Cost): Observable<Cost | ServerResponseError> {
     return this.httpClient.put<Cost>('/api/costs', cost)
-      .pipe(catchError(this.errorHandler<Cost>('updateCost', null)));
+      .pipe(catchError(throwCustomError));
   }
 
-  deleteCost(cost: Cost): Observable<void> {
+  deleteCost(cost: Cost): Observable<any> {
     return this.httpClient.delete('/api/costs/' + cost.id)
-      .pipe(catchError(this.errorHandler('deleteCost', undefined)));
+      .pipe(catchError(throwCustomError));
   }
 
-  private errorHandler<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      this.logger.logError('Error during: ' + operation + ' Details: ' + error);
-      return of(result as T);
-    };
-  }
 }

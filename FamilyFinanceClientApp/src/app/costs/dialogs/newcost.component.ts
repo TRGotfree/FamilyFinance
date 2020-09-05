@@ -43,8 +43,8 @@ export class NewCostComponent implements OnInit {
 
   payType = this.costEditStateService.lastPayType;
 
-  payTypeControl = new FormControl(this.cost.payType, [Validators.required]);
-  storeControl = new FormControl(this.cost.store, [Validators.required]);
+  payTypeControl = new FormControl(this.costEditStateService.lastPayType, [Validators.required]);
+  storeControl = new FormControl(this.costEditStateService.lastStore, [Validators.required]);
   countControl = new FormControl(this.cost.count);
   commentControl = new FormControl(this.cost.comment);
   storeNameControl = new FormControl('', [Validators.required]);
@@ -93,7 +93,7 @@ export class NewCostComponent implements OnInit {
           return;
         }
 
-        this.dialogRef.close(updatedCost);
+        this.dialogRef.close(this.cost);
 
       }, error => {
         this.logger.logError(error);

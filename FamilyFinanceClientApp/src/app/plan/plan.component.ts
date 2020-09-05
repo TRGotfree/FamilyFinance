@@ -121,9 +121,10 @@ export class PlanComponent implements OnInit {
         this.planService.updatePlan(editedPlan).subscribe(updatedPlan => {
           if (!updatedPlan) {
             this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
+            return;
           }
 
-          this.plans[this.plans.findIndex(p => p.id === updatedPlan.id)] = updatedPlan;
+          this.plans[this.plans.findIndex(p => p.id === editedPlan.id)] = updatedPlan;
           this.dataSource.data = this.plans;
 
         }, error => {
@@ -134,6 +135,7 @@ export class PlanComponent implements OnInit {
         this.planService.addPlan(editedPlan).subscribe(newPlan => {
           if (!newPlan) {
             this.snackBar.open('Не удалось сохранить данные по расходу!', 'OK', { duration: 3000, verticalPosition: 'top' });
+            return;
           }
 
           newPlan.maxFactAmount = editedPlan.maxFactAmount;
