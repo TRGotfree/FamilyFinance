@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { StatisticsService } from './statistics.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChartType, ChartOptions } from 'chart.js';
+import { Label } from 'ng2-charts';
+// import * as pluginDataLables from 'chartjs-plugin-datalabels'
 
 @Component({
     templateUrl: './statistics.component.html',
@@ -14,6 +17,27 @@ export class StatisticsComponent implements OnInit {
     costsAmount: number;
     different: number;
     profitAmount: number;
+    
+    payTypeChartLabels: Label[] = ['Наличность', 'Карты', 'Прочее'];
+    payTypeChartData: number[] = [];
+    payTypeChartType: ChartType = 'pie';
+    payTypeChartLegend = true;
+    payTypeChartOptions: ChartOptions = {
+        responsive: true,
+        legend: {
+            position: 'top'
+        },
+        plugins: {
+            datalabels: {
+                formatter: (value, ctx) => {
+                    const label = ctx.chart.data.labels[ctx.dataindex];
+                    return label;
+                }
+            }
+        }
+    };
+
+    payTypeChartColors: string[] = ['#81C784', '#673AB7', '#FF8A65'];
 
     private months = [
         'Январь',
@@ -51,4 +75,7 @@ export class StatisticsComponent implements OnInit {
         });
     }
 
+    private loadCostsByPayTypes(month: number, year: number): void {
+
+    }
 }

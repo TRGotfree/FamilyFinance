@@ -30,12 +30,16 @@
                     <mat-card-title>Разница</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                   <mat-icon>swap_horiz</mat-icon> {{different | currency}}
+                    <mat-icon>swap_horiz</mat-icon> {{different | currency}}
                 </mat-card-content>
             </mat-card>
         </div>
         <div id="container-charts">
+            <div class="pay-types-chart">
+                <canvas baseChart>
 
+                </canvas>
+            </div>
         </div>
     </section>
 </app-toolbar>

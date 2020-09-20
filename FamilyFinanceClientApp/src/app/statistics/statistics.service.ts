@@ -14,11 +14,11 @@ export class StatisticsService {
   private url = '/api/statistics';
 
   public getStatistics(month: number, year: number): Observable<Statistics> {
-    let urlParams = new HttpParams();
-    urlParams = urlParams.append('month', month.toString());
-    urlParams = urlParams.append('year', year.toString());
+    // let urlParams = new HttpParams();
+    // urlParams = urlParams.append('month', month.toString());
+    // urlParams = urlParams.append('year', year.toString());
 
-    return this.httpClient.get<Statistics>(this.url, { params: urlParams })
+    return this.httpClient.get<Statistics>(this.url + '/' + month + '/' + year)
       .pipe(catchError(this.errorHandler<Statistics>('getStatistics', null)));
   }
 

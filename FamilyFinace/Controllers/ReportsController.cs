@@ -25,10 +25,10 @@ namespace FamilyFinace.Controllers
         {
             try
             {
-
+                throw new NotImplementedException();
             }
             catch (Exception ex)
-            {
+            { 
                 logger.LogError(ex);
                 return StatusCode((int)HttpStatusCode.InternalServerError, Constants.ServerMessages.INTERNAL_SERVER_ERROR);
             }

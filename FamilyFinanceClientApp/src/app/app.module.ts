@@ -46,6 +46,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { IncomesComponent } from './incomes/incomes.component';
 import { EditCategoryComponent } from './dictionaries/category/dialogs/edit.category.component';
 import { DictionariesComponent } from './dictionaries/dictionaries.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { DictionariesComponent } from './dictionaries/dictionaries.component';
     MatAutocompleteModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    ChartsModule
   ],
   providers: [
     CostsService,
