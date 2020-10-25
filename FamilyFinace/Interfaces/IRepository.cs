@@ -10,6 +10,8 @@ namespace FamilyFinace.Interfaces
     public interface IRepository
     {
         Task<List<Cost>> GetCosts(DateTime date);
+
+        Task<List<Cost>> GetCosts(DateTime beginDate, DateTime endDate);
         
         Task<Cost> AddCost(Cost cost);
         

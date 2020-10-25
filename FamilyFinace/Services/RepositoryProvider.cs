@@ -189,6 +189,34 @@ namespace FamilyFinace.Services
             return resultQuery.OrderByDescending(cc => cc.Amount).ToListAsync();
         }
 
+        public Task<List<Cost>> GetCosts(DateTime beginDate, DateTime endDate)
+        {
+            var costsCategoriesQuery = repository.CostCategory;
+            var costsOnCertainDateQuery = repository.Cost.Include(s => s.Store)
+                .Include(p => p.PayType)
+                .Include(c => c.CostCategory).Where(c => c.Date >= beginDate && c.Date <= endDate);
+
+            var resultQuery = from costCategorie in costsCategoriesQuery
+                              join cd in costsOnCertainDateQuery on costCategorie.Id equals cd.CostCategoryId into c
+                              from cost in c.DefaultIfEmpty()
+                              select new Cost
+                              {
+                                  Amount = cost.Amount,
+                                  Comment = cost.Comment,
+                                  CostCategoryId = costCategorie.Id,
+                                  CostCategory = costCategorie,
+                                  Id = cost.Id,
+                                  Count = cost.Count,
+                                  Date = cost.Date,
+                                  PayTypeId = cost.PayTypeId,
+                                  PayType = cost.PayType,
+                                  StoreId = cost.PayTypeId,
+                                  Store = cost.Store
+                              };
+
+            return resultQuery.OrderByDescending(cc => cc.Amount).ToListAsync();
+        }
+
         public Task<List<Plan>> GetPlansWithMaxAmountOfCosts(int month, int year)
         {
             var costCategories = repository.CostCategory.Where(c => !c.IsRemoved);
