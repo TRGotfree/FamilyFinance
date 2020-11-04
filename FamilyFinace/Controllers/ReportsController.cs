@@ -18,7 +18,7 @@ namespace FamilyFinace.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
-        private const string excelFileContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        private const string EXCEL_FILE_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         private readonly ICustomLogger logger;
         private readonly IRepository repository;
         private readonly IReportProvider reportProvider;
@@ -39,7 +39,7 @@ namespace FamilyFinace.Controllers
 
                 var reportData = await reportProvider.GetReportData(costs, $"Отчет по расходам за период: {beginDate.ToString("dd.MM.yyyy")}-{endDate.ToString("dd.MM.yyyy")}");
 
-                return File(reportData, excelFileContentType);
+                return File(reportData, EXCEL_FILE_CONTENT_TYPE);
             }
             catch (Exception ex)
             {
