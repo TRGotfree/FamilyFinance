@@ -37,7 +37,7 @@ namespace FamilyFinace.Controllers
                 if (costs == null || costs.Count == 0)
                     return StatusCode((int)HttpStatusCode.NoContent);
 
-                var reportData = await reportProvider.GetReportData(costs, $"Отчет по расходам за период: {beginDate.ToString("dd.MM.yyyy")}-{endDate.ToString("dd.MM.yyyy")}");
+                var reportData = await reportProvider.GetReportData(costs, $"Отчет по расходам за период: {beginDate:dd.MM.yyyy}-{endDate:dd.MM.yyyy}");
 
                 return File(reportData, EXCEL_FILE_CONTENT_TYPE);
             }

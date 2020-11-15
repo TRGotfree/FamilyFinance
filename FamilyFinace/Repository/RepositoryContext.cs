@@ -22,6 +22,7 @@ namespace FamilyFinace.Repository
         public DbSet<Cost> Cost { get; set; }
         public DbSet<Income> Income { get; set; }
         public DbSet<Plan> Plan { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,7 +55,6 @@ namespace FamilyFinace.Repository
                 new Models.Store { Id = 7, Name = "Full Market", IsRemoved = false },
                 new Models.Store { Id = 8, Name = "Аптека", IsRemoved = false });
 
-
             modelBuilder.Entity<Cost>().HasKey(c => c.Id);
             modelBuilder.Entity<Cost>().Property(c => c.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Cost>().HasIndex(c => c.CostCategoryId);
@@ -78,6 +78,14 @@ namespace FamilyFinace.Repository
             modelBuilder.Entity<Plan>().HasIndex(p => p.CategoryId);
             modelBuilder.Entity<Plan>().Property(p => p.Amount).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Plan>().HasIndex(p => new { p.Month, p.Year, p.CategoryId }).IsUnique();
+
+            modelBuilder.Entity<Report>().HasKey(r => r.Id);
+            modelBuilder.Entity<Report>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<Report>().HasData(new Report { Id = 1, Name = "CostsByPeriod", Description = "Расходы за период" });
+            modelBuilder.Entity<Report>().HasData(new Report { Id = 2, Name = "CostsByCategories", Description = "Расходы по категориям" });
+            modelBuilder.Entity<Report>().HasData(new Report { Id = 3, Name = "CostsByShops", Description = "Расходы в разрезе магазинов" });
+            modelBuilder.Entity<Report>().HasData(new Report { Id = 4, Name = "CostsByPayTypes", Description = "Расходы в разрезе видов оплат" });
+            modelBuilder.Entity<Report>().HasData(new Report { Id = 5, Name = "CurrentBalance", Description = "Текущий баланс" });
         }
     }
 }
